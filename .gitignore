@@ -1,0 +1,13 @@
+cmake-build-*/
+build/
+tools/clang/
+tools/tmp/
+tools/linkle
+tools/linkle.exe
+
+.idea/
+.cache/
+.clangd
+.vscode/settings.json
+compile_commands.json
+.vs
