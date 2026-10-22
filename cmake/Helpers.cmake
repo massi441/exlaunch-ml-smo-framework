@@ -36,13 +36,3 @@ function(deploy_nso target subsdk_name name dest)
     )
     add_custom_target(${target}_${name}_deploy ALL DEPENDS ${_exefs}/${subsdk_name})
 endfunction()
-
-# Cleans up any stale subsdk9 when single subsdk mode is turned on
-# TODO: Pass destination and perform cleanup
-#function(clean_multi_subsdk_mode)
-#    if (MULTI_SUBSDK)
-#        return()
-#    endif()
-#endfunction()
-
-# TODO: Deploy ftp
