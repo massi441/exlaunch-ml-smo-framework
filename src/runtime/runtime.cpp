@@ -57,5 +57,16 @@ void initLibs() {
     }
 }
 
+// definitions needed at runtime go here
+extern "C" {
+
+void print_unresolved_symbol(const char* name) {
+    mallow::log::logLine("Unresolved symbol: %s", name);
+    mallow::dbg::debugPrint("Unresolved symbol: %s\n", name);
 }
+
+}
+
+}
+
 

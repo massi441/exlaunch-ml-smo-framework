@@ -1,6 +1,7 @@
-#include <mallow/logging/debug.hpp>
-#include <mallow/logging/logSinks.hpp>
-#include <mallow/logging/logger.hpp>
+// #include <mallow/logging/debug.hpp>
+// #include <mallow/logging/logSinks.hpp>
+// #include <mallow/logging/logger.hpp>
+#include <cstddef>
 
 extern "C" {
 /* These magic symbols are provided by the linker.  */
@@ -37,13 +38,11 @@ void entrypointInit(void* x0, void* x1) {
     userMain();
 }
 
+/**
+ * The function called by rtld once a module is loaded
+ */
 void rtldInit() {
     entrypointInit(nullptr, nullptr);
-}
-
-void print_unresolved_symbol(const char* name) {
-    mallow::dbg::debugPrint("Unresolved symbol: %s\n", name);
-    mallow::log::logLine("Unresolved symbol: %s", name);
 }
 
 void __cxa_atexit(void (*func)(void*), void* arg, void* dso_handle) {

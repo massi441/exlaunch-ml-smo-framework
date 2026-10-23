@@ -6,6 +6,7 @@ target_include_directories(ml_runtime_subsdk PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 
 target_link_libraries(ml_runtime_subsdk PRIVATE subsdk_common)
 target_link_libraries(ml_runtime_subsdk PRIVATE ml_core_cpp)
+target_link_libraries(ml_runtime_subsdk PRIVATE ml_subsdk_startup) # Module specific stuff (Since it's built as a separate subsdk)
 
 # Compile & Link these libraries once here so they are available at runtime for other subsdk's
 # Mallow and exlaunch need all their symbols exported to make sure other subsdk's can find them at runtime
@@ -22,7 +23,6 @@ target_sources(ml_runtime_subsdk PRIVATE
     main.cpp
     runtime.cpp
     ${RUNTIME_SOURCES}
-    ${MODULE_SOURCES} # Module specific stuff (Since it's built as a separate subsdk)
 )
 
 target_compile_definitions(ml_runtime_subsdk PRIVATE SUBSDK_MODULE_NAME="ml_runtime")
