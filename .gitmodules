@@ -4,3 +4,6 @@
 [submodule "libs/smo"]
 	path = libs/smo
 	url = https://github.com/massi441/smo-headers.git
+[submodule "src/core-cpp"]
+	path = src/core-cpp
+	url = https://github.com/massi441/core-cpp.git
