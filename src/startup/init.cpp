@@ -30,12 +30,8 @@ void __init_array(void) {
     }
 }
 
-static void* initArgs[2] = {};
-
-void entrypointInit(void* x0, void* x1) {
+void entrypointInit(void*, void*) {
     __init_array();
-    initArgs[0] = x0;
-    initArgs[1] = x1;
     userMain();
 }
 
