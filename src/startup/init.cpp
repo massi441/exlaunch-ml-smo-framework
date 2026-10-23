@@ -1,7 +1,8 @@
-// #include <mallow/logging/debug.hpp>
-// #include <mallow/logging/logSinks.hpp>
-// #include <mallow/logging/logger.hpp>
 #include <cstddef>
+
+/**
+ * This file contains code that initializes a module after it is found by rtld.
+ */
 
 extern "C" {
 /* These magic symbols are provided by the linker.  */
