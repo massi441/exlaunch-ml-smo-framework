@@ -27,5 +27,3 @@ target_sources(marshmallow
 )
 
 target_link_libraries(marshmallow PUBLIC exlaunch ArduinoJson)
-target_compile_definitions(marshmallow PRIVATE NNSDK=1)
-
