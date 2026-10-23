@@ -1,6 +1,7 @@
 #pragma once
 
-#include <ml/input/InputTypes.h>
+#include <math/seadVector.hpp>
+#include <ml/Input/InputTypes.h>
 
 namespace ml {
 

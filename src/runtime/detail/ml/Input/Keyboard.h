@@ -1,9 +1,8 @@
 #pragma once
 
+#include <ml/Core/Util/Macros.h>
+#include <ml/Input/InputTypes.h>
 #include <nn/hid.h>
-
-#include "Core/Util/Macros.h"
-#include "CoreMod/Input/InputTypes.h"
 
 namespace ml {
 

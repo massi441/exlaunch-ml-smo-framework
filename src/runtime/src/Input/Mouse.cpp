@@ -1,4 +1,4 @@
-#include "CoreMod/Input/Mouse.h"
+#include <ml/Input/Mouse.h>
 
 namespace ml {
 

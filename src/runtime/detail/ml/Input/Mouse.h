@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Util/Macros.h"
-#include "CoreMod/Input/InputTypes.h"
+#include <ml/Core/Util/Macros.h>
+#include <ml/Input/InputTypes.h>
 
 namespace ml {
 

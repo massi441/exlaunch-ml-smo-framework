@@ -1,6 +1,4 @@
-#include "CoreMod/Input/Keyboard.h"
-
-#include <ml/Util/Logger.h>
+#include <ml/Input/Keyboard.h>
 
 namespace ml {
 
