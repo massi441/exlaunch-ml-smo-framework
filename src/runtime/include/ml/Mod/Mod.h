@@ -8,12 +8,15 @@ namespace ml {
 
 class Mod {
 public:
+    virtual void Initialize() {}
     virtual void InstallHooks() { }
     virtual void InstallPatches() { }
     virtual void RegisterActors() { }
     virtual void RegisterAreas() { }
     virtual void RegisterCameraPosers() {}
     virtual void RegisterPlayers() { }
+
+    virtual ~Mod() = default;
 };
 
 template<typename T>
@@ -23,6 +26,7 @@ static void RegisterMod(const char* modName) {
 
     T mod = T();
 
+    mod.Initialize();
     mod.InstallHooks();
     mod.InstallPatches();
     mod.RegisterActors();

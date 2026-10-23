@@ -30,7 +30,7 @@ void __init_array(void) {
     }
 }
 
-void entrypointInit(void*, void*) {
+void entrypointInit(void* x1, void* x2) {
     __init_array();
     userMain();
 }
