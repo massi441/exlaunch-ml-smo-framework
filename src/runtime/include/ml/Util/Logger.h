@@ -24,7 +24,7 @@ inline bool isLogEnabled(mallow::config::LogLevel level) {
 
 }
 
-#ifdef ENABLE_LOG
+#ifdef ML_ENABLE_LOG
 #define LOG_LINE(fmt, ...)                                                                    mallow::log::logLine(fmt, ##__VA_ARGS__)
 #define LOG_VERBOSE(fmt, ...)     if (ml::isLogEnabled(mallow::config::LogLevel::Verbose))     ml::logLeveled("|V| ", fmt, ##__VA_ARGS__)
 #define LOG_TRACE(fmt, ...)       if (ml::isLogEnabled(mallow::config::LogLevel::Trace))       ml::logLeveled("|T| ", fmt, ##__VA_ARGS__)

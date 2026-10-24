@@ -41,7 +41,7 @@ namespace mallow::init {
         config::readConfigToStruct();
 
         setupLogging();
-#ifdef ENABLE_LOG // who cares tbf
+#ifdef ML_ENABLE_LOG // who cares tbf
         log::logLine("Logging and config set up!");
 #endif
     }
