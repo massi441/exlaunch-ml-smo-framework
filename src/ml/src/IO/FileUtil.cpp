@@ -12,9 +12,15 @@ const char* getSdMountPath() {
     const char* switchPath = "sd:/atmosphere/contents/0100000000010000/";
     const char* emulatorPath = "sd:/";
 
-    return mallow::config::isEmu() // TODO: Reimplement as part of dropping mallow
+    return ml::isEmulator()
         ? emulatorPath
         : switchPath;
+}
+
+bool isEmulator() {
+    nn::fs::DirectoryEntryType type;
+    nn::fs::GetEntryType(&type, "sd:/atmosphere/package3");
+    return type != nn::fs::DirectoryEntryType_File;
 }
 
 std::string makeSdPath(const char* fileName) {

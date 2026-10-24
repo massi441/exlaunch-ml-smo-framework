@@ -20,16 +20,6 @@ enum class FileOpenMode {
 };
 
 /**
- * Gets the base path where all custom mod files are stored
- */
-ML_EXPORT const char* getSdMountPath();
-
-/**
- * Creates a path for a file located in the sd:/ directory with the given file name
- */
-ML_EXPORT std::string makeSdPath(const char* fileName);
-
-/**
  * Attempts to open a file and creates it if it doesn't exist
  * @param fileHandle A pointer to the file handle
  * @param filePath The path to the file
@@ -39,13 +29,13 @@ ML_EXPORT std::string makeSdPath(const char* fileName);
 ML_EXPORT bool openOrCreateFile(nn::fs::FileHandle* fileHandle, const char* filePath, ml::FileOpenMode openMode);
 
 /**
- * Checks if a given path exists, whether it is a directory or a file
+ * Reads a file into a given byte buffer
+ * @param outBuffer The buffer to read the file into
+ * @param filePath The path of the file
+ * @param startOffset The offset in the file to start reading at
+ * @param readSize The amount of bytes to read
+ * @return True if the file was read, false otherwise
  */
-ML_EXPORT bool isExistPath(const char* filePath);
-
-ML_EXPORT bool isExistFile(const char* filePath);
-ML_EXPORT bool isExistDir(const char* filePath);
-
 ML_EXPORT bool readFile(ml::Array<byte>* outBuffer, const char* filePath, uint64_t startOffset = 0, int64_t readSize = -1);
 
 /**
@@ -59,6 +49,28 @@ ML_EXPORT bool writeFile(nn::fs::FileHandle fileHandle, const void* data, size_t
  * @return true if all the data was written and flushed, false otherwise
  */
 ML_EXPORT bool writeFile(const char* filePath, const void* data, size_t size);
+
+/**
+ * Checks if a given path exists, whether it is a directory or a file
+ */
+ML_EXPORT bool isExistPath(const char* filePath);
+ML_EXPORT bool isExistFile(const char* filePath);
+ML_EXPORT bool isExistDir(const char* filePath);
+
+/**
+ * Gets the base path where all custom mod files are stored
+ */
+ML_EXPORT const char* getSdMountPath();
+
+/**
+ * Creates a path for a file located in the sd:/ directory with the given file name
+ */
+ML_EXPORT std::string makeSdPath(const char* fileName);
+
+/**
+ * Checks if the code is currently running on an emulator
+ */
+ML_EXPORT bool isEmulator();
 
 inline bool openOrCreateFile(nn::fs::FileHandle* fileHandle, const std::string& filePath, ml::FileOpenMode openMode) {
     return ml::openOrCreateFile(fileHandle, filePath.c_str(), openMode);
