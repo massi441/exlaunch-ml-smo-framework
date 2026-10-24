@@ -1,7 +1,7 @@
 # Interface that contains default configuration for any subsdk
-add_library(subsdk_common INTERFACE)
+add_library(ml_subsdk_common INTERFACE)
 
-target_link_libraries(subsdk_common INTERFACE
+target_link_libraries(ml_subsdk_common INTERFACE
     -T ${CMAKE_CURRENT_SOURCE_DIR}/cmake/linker.ld
     -Wl,--no-whole-archive
     -Wl,--gc-sections

@@ -2,6 +2,8 @@ set(CMAKE_SYSTEM_NAME Generic-ELF)
 set(CMAKE_SYSTEM_VERSION "Marshmallow")
 set(CMAKE_SYSTEM_PROCESSOR "aarch64")
 
+# TODO: Add macos support
+
 # for multiplatform builds to identify that they are building for the switch
 set(SWITCH TRUE)
 set(CMAKE_EXECUTABLE_SUFFIX ".elf")
@@ -95,4 +97,4 @@ set(CMAKE_C_COMPILER_WORKS true)
 set(CMAKE_CXX_COMPILER_WORKS true)
 set(CMAKE_ASM_COMPILER_WORKS true)
 
-set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} -x assembler-with-cpp -Wl,-z,norelro -g")
+set(CMAKE_ASM_FLAGS "-x assembler-with-cpp -Wl,-z,norelro -g")

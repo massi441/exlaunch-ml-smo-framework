@@ -23,7 +23,7 @@ function(generate_npdm json_path)
     add_custom_target(npdm ALL DEPENDS ${ML_OUTPUT_DIR}/main.npdm)
 endfunction()
 
-# Converts a target's ELF file into an NSO.
+# Converts a target's ELF file into an NSO, inside the output directory.
 # You pass it the name of the target and the name of the resulting subsdk.
 # example usage: make_nso(my_target subsdk8)
 function(make_nso target subsdk_name)
@@ -60,3 +60,5 @@ function(deploy_nso target deployment_name dest)
     )
     add_custom_target(${deployment_name} ALL DEPENDS ${dest}/${subsdk_name})
 endfunction()
+
+# TCP Deployment helper

@@ -4,7 +4,7 @@ add_executable(ml_runtime_subsdk)
 target_include_directories(ml_runtime_subsdk PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/detail)
 target_include_directories(ml_runtime_subsdk PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_link_libraries(ml_runtime_subsdk PRIVATE subsdk_common)
+target_link_libraries(ml_runtime_subsdk PRIVATE ml_subsdk_common)
 target_link_libraries(ml_runtime_subsdk PRIVATE ml_core_cpp)
 target_link_libraries(ml_runtime_subsdk PRIVATE ml_subsdk_startup) # Module specific stuff (Since it's built as a separate subsdk)
 
@@ -27,11 +27,8 @@ target_sources(ml_runtime_subsdk PRIVATE
 
 target_compile_definitions(ml_runtime_subsdk PRIVATE SUBSDK_MODULE_NAME="ml_runtime")
 
-# rtld initializes subsdk's starting from the subsdk at the highest slot.
+# The runtime's NSO goes into the output directory, the consumes manually deploy it to their mod folder.
+# Note: rtld initializes subsdk's starting from the subsdk at the highest slot.
 # The maximum slot is 9, so we reserve it to the runtime's subsdk, to ensure that it is initialized
 # before any subsdk that might depend on it
-set(SUBSDK_NAME "subsdk9")
-
-#make_nso_target(ml_runtime_subsdk ${SUBSDK_NAME})
-#deploy_local_nso(ml_runtime_subsdk ${SUBSDK_NAME})
-#deploy_public_nso(ml_runtime_subsdk ${SUBSDK_NAME})
+make_nso(ml_runtime_subsdk "subsdk9")
