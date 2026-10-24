@@ -25,10 +25,8 @@ target_sources(ml_runtime_subsdk PRIVATE
     ${RUNTIME_SOURCES}
 )
 
-target_compile_definitions(ml_runtime_subsdk PRIVATE SUBSDK_MODULE_NAME="ml_runtime")
-
 # The runtime's NSO goes into the output directory, the consumes manually deploy it to their mod folder.
 # Note: rtld initializes subsdk's starting from the subsdk at the highest slot.
 # The maximum slot is 9, so we reserve it to the runtime's subsdk, to ensure that it is initialized
 # before any subsdk that might depend on it
-make_nso(ml_runtime_subsdk "subsdk9")
+make_subsdk(ml_runtime_subsdk "subsdk9" "ml_runtime")

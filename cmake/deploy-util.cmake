@@ -2,16 +2,17 @@ if (NOT ML_OUTPUT_DIR)
     message(FATAL_ERROR "Ensure that the variable 'ML_OUTPUT_DIR' is specified")
 endif()
 
-if (NOT ML_SUBSDK_NAME_PROPERTY)
-    message(FATAL_ERROR "Ensure that the variable 'ML_SUBSDK_NAME_PROPERTY' is specified")
-endif()
-
 if (NOT ML_TOOLS_DIR)
     message(FATAL_ERROR "Ensure that the variable 'ML_TOOLS_DIR' is specified")
 endif()
 
 file(MAKE_DIRECTORY ${ML_OUTPUT_DIR})
 
+# A custom target that waits on generate_npdm and all subsdk's registered by make_subsdk
+# ensures that deployments triggered by deploy_mod (see below) wait on all targets to be built into the output folder
+add_custom_target(ml_deploy_deps)
+
+# Creates a program description for a mod's exefs folder. Should be called at most once per build
 # The npdm describes the whole process, so only one npdm needs be created regardless of how many subsdk's there are
 # This function uses the provided the npdm.json file to the npdm tools and outputs it to the build directory
 function(generate_npdm json_path)
@@ -20,45 +21,39 @@ function(generate_npdm json_path)
         DEPENDS ${json_path}
         COMMAND ${ML_TOOLS_DIR}/npdmtool${EXE_EXT} ${json_path} ${ML_OUTPUT_DIR}/main.npdm
     )
-    add_custom_target(npdm ALL DEPENDS ${ML_OUTPUT_DIR}/main.npdm)
+    add_custom_target(generate_npdm ALL DEPENDS ${ML_OUTPUT_DIR}/main.npdm)
+    add_dependencies(ml_deploy_deps generate_npdm)
 endfunction()
 
-# Converts a target's ELF file into an NSO, inside the output directory.
-# You pass it the name of the target and the name of the resulting subsdk.
-# example usage: make_nso(my_target subsdk8)
-function(make_nso target subsdk_name)
-    set_property(TARGET ${target} PROPERTY ${ML_SUBSDK_NAME_PROPERTY} ${subsdk_name})
-    add_custom_command(TARGET ${target} POST_BUILD
-        COMMAND ${ML_TOOLS_DIR}/linkle nso $<TARGET_FILE:${target}> ${ML_OUTPUT_DIR}/${subsdk_name}.nso
-    )
-endfunction()
+# Creates a standalone subsdk from a target: links common flags, the startup code,
+# and converts the target's ELF file into an NSO inside the output directory.
+# You pass it the name of your CMake target, the name of the subsdk, and the name of your NSO module.
+# example usage: make_subsdk(ml_runtime_subsdk "subsdk9" "ml_runtime")
+function(make_subsdk target subsdk_name module_name)
+    target_link_libraries(${target} PRIVATE ml_subsdk_common)
+    target_link_libraries(${target} PRIVATE ml_subsdk_startup)
+    target_compile_definitions(${target} PRIVATE ML_SUBSDK_MODULE_NAME="${module_name}")
 
-# Deploys an NSO from the deploy folder into the provided destination folder
-# You pass it the target you built the NSO with make_nso, the name of the
-# deployment, and the destination folder of the deployment.
-# If you are deploying to a mod folder, ensure that the destination ends with '/exefs'
-# example usage: deploy_nso(my_target "yuzu_deployment" "yuzu/{...}/MyMod/exefs")
-function(deploy_nso target deployment_name dest)
-    if (NOT TARGET ${target})
-        message(FATAL_ERROR "Cannot deploy ${subsdk_name}, ${target} does not exist")
-    endif()
+    set(subsdk_output_path ${ML_OUTPUT_DIR}/${subsdk_name})
 
-    get_property(subsdk_name TARGET ${target} PROPERTY ${ML_SUBSDK_NAME_PROPERTY})
-    if (NOT subsdk_name)
-        message(FATAL_ERROR "Cannot deploy ${target}, the subsdk name property '${ML_SUBSDK_NAME_PROPERTY}' was not set. Ensure 'make_nso' was called on your target")
-    endif()
-
-    if (NOT dest)
-        message(FATAL_ERROR "Cannot deploy ${subsdk_name}, the destination path was not provided")
-    endif()
-
-    # Note: CMAKE_COMMAND represents the path of the CMake executable on the machine
     add_custom_command(
-        OUTPUT ${dest}/${subsdk_name}
+        OUTPUT ${subsdk_output_path}
         DEPENDS ${target}
-        COMMAND ${CMAKE_COMMAND} -E copy ${ML_OUTPUT_DIR}/${subsdk_name}.nso ${dest}/${subsdk_name}
+        COMMAND ${ML_TOOLS_DIR}/linkle nso $<TARGET_FILE:${target}> ${subsdk_output_path}
     )
-    add_custom_target(${deployment_name} ALL DEPENDS ${dest}/${subsdk_name})
+
+    add_custom_target(${target}_nso ALL DEPENDS ${subsdk_output_path})
+    add_dependencies(ml_deploy_deps ${target}_nso)
+endfunction()
+
+# Deploys the output folder into the specified destination folder.
+# If you are deploying to a mod folder, ensure that the destination ends with '/exefs'
+# example usage: deploy_mod("yuzu_deployment" "yuzu/MyModPath/exefs")
+function(deploy_mod deployment_name dest)
+    add_custom_target(${deployment_name} ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${ML_OUTPUT_DIR} ${dest}
+    )
+    add_dependencies(${deployment_name} ml_deploy_deps)
 endfunction()
 
 # TCP Deployment helper
