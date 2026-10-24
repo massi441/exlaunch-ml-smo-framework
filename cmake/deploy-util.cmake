@@ -8,6 +8,11 @@ endif()
 
 file(MAKE_DIRECTORY ${ML_OUTPUT_DIR})
 
+# If the user switches to static build mode, we need to ensure any stale runtime subsdk9 is deleted from the output folder
+if (ML_RUNTIME_BUILD_MODE STREQUAL "STATIC")
+    file(REMOVE ${ML_OUTPUT_DIR}/subsdk9)
+endif()
+
 # A custom target that waits on generate_npdm and all subsdk's registered by make_subsdk
 # ensures that deployments triggered by deploy_mod (see below) wait on all targets to be built into the output folder
 add_custom_target(ml_deploy_deps)
@@ -62,13 +67,21 @@ function(make_subsdk target subsdk_name module_name)
     add_dependencies(ml_deploy_deps ${target}_nso)
 endfunction()
 
-# Deploys the output folder into the specified destination folder.
+# Deploys the current output folder into the given destination folder.
 # If you are deploying to a mod folder, ensure that the destination ends with '/exefs'
 # example usage: deploy_mod("yuzu_deployment" "yuzu/MyModPath/exefs")
 function(deploy_mod deployment_name dest)
-    add_custom_target(${deployment_name} ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${ML_OUTPUT_DIR} ${dest}
-    )
+    # Need to cleanup any stale runtime subsdk9 from previous builds
+    if (ML_RUNTIME_BUILD_MODE STREQUAL "STATIC")
+        add_custom_target(${deployment_name} ALL
+            COMMAND ${CMAKE_COMMAND} -E rm ${dest}/subsdk9
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${ML_OUTPUT_DIR} ${dest}
+        )
+    else()
+        add_custom_target(${deployment_name} ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${ML_OUTPUT_DIR} ${dest}
+        )
+    endif()
     add_dependencies(${deployment_name} ml_deploy_deps)
 endfunction()
 
