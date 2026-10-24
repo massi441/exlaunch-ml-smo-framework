@@ -1,5 +1,5 @@
 if (NOT CMAKE_ASM_COMPILER_LOADED)
-    message(FATAL_ERROR "Enable assembly part of your project's languages: project(my_project C CXX ASM)")
+    message(FATAL_ERROR "Enable assembly as part of your project's languages: project(my_project C CXX ASM)")
 endif()
 
 include(cmake/deploy-util.cmake)
