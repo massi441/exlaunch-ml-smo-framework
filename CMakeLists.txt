@@ -1,5 +1,3 @@
-include(cmake/Helpers.cmake)
-
 # Interface that contains default configuration for any subsdk
 add_library(subsdk_common INTERFACE)
 
@@ -13,14 +11,12 @@ target_link_libraries(subsdk_common INTERFACE
     -Wl,-init,rtldInit
 )
 
-#target_link_libraries(subsdk_common INTERFACE ml_core_cpp)
-
-set(RUNTIME_LIBS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs)
+include(cmake/deploy-util.cmake)
 
 # Libs
-add_subdirectory(${RUNTIME_LIBS_PATH}/exlaunch)
-add_subdirectory(${RUNTIME_LIBS_PATH}/ArduinoJson)
-add_subdirectory(${RUNTIME_LIBS_PATH}/marshmallow)
+add_subdirectory(libs/exlaunch)
+add_subdirectory(libs/ArduinoJson)
+add_subdirectory(libs/marshmallow)
 
 # Custom
 add_subdirectory(src)
