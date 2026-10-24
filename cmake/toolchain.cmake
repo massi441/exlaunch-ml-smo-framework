@@ -67,7 +67,6 @@ endif()
 set(CMAKE_C_COMPILER "${TOOLS_DIR}/clang/bin/clang${EXE_EXT}")
 set(CMAKE_CXX_COMPILER "${TOOLS_DIR}/clang/bin/clang++${EXE_EXT}")
 set(CMAKE_ASM_COMPILER "${TOOLS_DIR}/clang/bin/clang${EXE_EXT}")
-set(CMAKE_LINKER "${DEVKITA64}/clang/bin/ld.lld${EXE_EXT}")
 set(CURL_LOCATION "${TOOLS_DIR}/curl/curl${EXE_EXT}")
 file(REAL_PATH "${TOOLS_DIR}/clang/bin/clang++${EXE_EXT}" CLANGD_DRIVER_PATH)
 
