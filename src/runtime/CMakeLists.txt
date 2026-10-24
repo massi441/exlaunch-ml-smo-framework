@@ -7,9 +7,7 @@ if (USE_RUNTIME_INTERFACE)
     set(MULTI_SUBSDK ON)
     include(runtime-interface.cmake)
 else()
-    file(GLOB_RECURSE RUNTIME_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
-    )
+
 
     if (MULTI_SUBSDK)
         include(runtime-dynamic.cmake)

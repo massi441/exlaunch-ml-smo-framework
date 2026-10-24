@@ -19,6 +19,10 @@ target_link_libraries(ml_runtime_subsdk PRIVATE
 
 target_compile_definitions(exlaunch PUBLIC EXL_DEBUG)
 
+file(GLOB_RECURSE RUNTIME_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+)
+
 target_sources(ml_runtime_subsdk PRIVATE
     main.cpp
     runtime.cpp
