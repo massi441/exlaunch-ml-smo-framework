@@ -12,9 +12,11 @@
 namespace ml {
 
 static void initLibs();
+static void installHooks();
 
 void ModRuntime::Initialize() {
     initLibs();
+    installHooks();
 
     nn::fs::MountSdCardForDebug("sd");
 
@@ -57,14 +59,18 @@ void initLibs() {
     }
 }
 
+void installHooks() {
+    // TODO: Initialize mouse, keyboard, network
+}
+
+}
+
 // definitions needed at runtime go here
 extern "C" {
 
 void print_unresolved_symbol(const char* name) {
     mallow::log::logLine("Unresolved symbol: %s", name);
     mallow::dbg::debugPrint("Unresolved symbol: %s\n", name);
-}
-
 }
 
 }
