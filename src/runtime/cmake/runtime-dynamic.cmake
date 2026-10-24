@@ -5,6 +5,8 @@ target_include_directories(ml_runtime_dynamic PRIVATE ${ML_RUNTIME_DIR}/detail)
 target_include_directories(ml_runtime_dynamic PRIVATE ${ML_RUNTIME_DIR}/include)
 
 target_link_libraries(ml_runtime_dynamic PRIVATE ml_core_cpp)
+target_compile_options(ml_runtime_dynamic PRIVATE -fvisibility=hidden)
+target_compile_definitions(ml_runtime_dynamic PRIVATE ML_DYNAMIC_RUNTIME)
 
 # We compile & link these libraries once here so they are available at runtime for other subsdk's
 # Mallow and exlaunch need all their symbols exported to make sure other subsdk's can find them at runtime

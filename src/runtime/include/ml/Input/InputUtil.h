@@ -1,7 +1,10 @@
 #pragma once
 
 #include <math/seadVector.hpp>
+#include <ml/Export.h>
 #include <ml/Input/InputTypes.h>
+
+ML_EXPORT_SCOPE_BEGIN
 
 namespace ml {
 
@@ -16,3 +19,5 @@ bool isButtonDown(ml::MouseButton button);
 sead::Vector2f getMousePos();
 
 }
+
+ML_EXPORT_SCOPE_END

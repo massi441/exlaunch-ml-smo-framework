@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ml/Export.h>
+
 #include "Player/PlayerFactory.h"
 #include "Scene/ProjectActorFactory.h"
 #include "Scene/ProjectAreaFactory.h"
@@ -11,10 +13,10 @@ namespace ml {
 
 class FactoryRegistry {
 private:
-    static void registerActor(const char* entryName, al::ActorCreatorFunction createFunc);
-    static void registerArea(const char* entryName, al::AreaCreatorFunction createFunc);
-    static void registerCameraPoser(const char* entryName, al::CameraPoserCreatorFunction createFunc);
-    static void registerPlayer(const char* entryName, PlayerCreatorFunction createFunc);
+    ML_EXPORT static void registerActor(const char* entryName, al::ActorCreatorFunction createFunc);
+    ML_EXPORT static void registerArea(const char* entryName, al::AreaCreatorFunction createFunc);
+    ML_EXPORT static void registerCameraPoser(const char* entryName, al::CameraPoserCreatorFunction createFunc);
+    ML_EXPORT static void registerPlayer(const char* entryName, PlayerCreatorFunction createFunc);
 
     template <typename T>
     static al::LiveActor* createCustomActorFunc(const char* actorName) {

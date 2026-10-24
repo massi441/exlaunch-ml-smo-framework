@@ -15,8 +15,6 @@ public:
     virtual void RegisterAreas() { }
     virtual void RegisterCameraPosers() {}
     virtual void RegisterPlayers() { }
-
-    virtual ~Mod() = default;
 };
 
 template<typename T>

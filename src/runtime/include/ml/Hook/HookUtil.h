@@ -2,13 +2,14 @@
 
 #include <cstdlib>
 #include <exl/hook/base.hpp>
+#include <ml/Export.h>
 
 #define ASSERT_STATIC_CALLBACK(CallbackFuncType) static_assert(!std::is_member_function_pointer_v<CallbackFuncType>, "Callback method must be static!");
 
 namespace ml {
 
-bool lookUpSymbol(uintptr_t* outAddress, const char* symbol);
-bool isExistSymbol(const char* symbol);
+ML_EXPORT bool lookUpSymbol(uintptr_t* outAddress, const char* symbol);
+ML_EXPORT bool isExistSymbol(const char* symbol);
 
 inline uint64_t getBaseAddress() {
     return reinterpret_cast<uint64_t>(malloc) - 0x00724b94;

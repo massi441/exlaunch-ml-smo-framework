@@ -17,6 +17,10 @@ bool isKeyDown(ml::KeyboardKey key) {
     return ml::Keyboard::Instance().isKeyDown(key);
 }
 
+bool isButtonClicked(ml::MouseButton button) {
+    return ml::Mouse::Instance().isButtonClicked(button);
+}
+
 bool isButtonReleased(ml::MouseButton button) {
     return ml::Mouse::Instance().isButtonReleased(button);
 }
