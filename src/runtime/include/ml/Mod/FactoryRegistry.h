@@ -11,6 +11,10 @@ namespace ml {
 
 // non-templates funcs are private, that way consumers only call the templated variants (the template variants have friend access to the factory registry)
 
+/**
+ * A registry for registering custom factories entries.
+ * All its functions are private, use the free registry functions below instead.
+ */
 class FactoryRegistry {
 private:
     ML_EXPORT static void registerActor(const char* entryName, al::ActorCreatorFunction createFunc);
