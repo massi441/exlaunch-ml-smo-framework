@@ -1,6 +1,5 @@
 #include <exl/diag/abort.hpp>
 #include <exl/nx/kernel/svc.h>
-#include <mallow/exception/handler.hpp>
 #include <mallow/logging/logger.hpp>
 
 namespace exl::diag {

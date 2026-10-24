@@ -11,10 +11,6 @@ target_sources(exlaunch
         ${CMAKE_CURRENT_SOURCE_DIR}/exl/nx/kernel/virtmem.c
         ${CMAKE_CURRENT_SOURCE_DIR}/exl/patch/patcher_impl.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/exl/patch/stream_patcher.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/exl/reloc/elf.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/exl/reloc/rtld/ld.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/exl/reloc/rtld/ModuleObject.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/exl/reloc/rtld/utils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/exl/util/sys/cur_proc_handle.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/exl/util/sys/mem_layout.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/exl/util/sys/rw_pages.cpp
