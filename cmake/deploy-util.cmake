@@ -12,6 +12,19 @@ file(MAKE_DIRECTORY ${ML_OUTPUT_DIR})
 # ensures that deployments triggered by deploy_mod (see below) wait on all targets to be built into the output folder
 add_custom_target(ml_deploy_deps)
 
+# An interface that contains default link options for any subsdk, and is used by make_nso below
+add_library(ml_subsdk_link_options INTERFACE)
+
+target_link_options(ml_subsdk_link_options INTERFACE
+    -T ${CMAKE_CURRENT_SOURCE_DIR}/cmake/linker.ld
+    -Wl,--no-whole-archive
+    -Wl,--gc-sections
+    -Wl,--hash-style=sysv
+    -Wl,--build-id=uuid
+    -Wl,-Bsymbolic # Linker resolves symbols for current module
+    -Wl,-init,rtldInit
+)
+
 # Creates a program description for a mod's exefs folder. Should be called at most once per build
 # The npdm describes the whole process, so only one npdm needs be created regardless of how many subsdk's there are
 # This function uses the provided the npdm.json file to the npdm tools and outputs it to the build directory
@@ -28,10 +41,13 @@ endfunction()
 # Creates a standalone subsdk from a target: links common flags, the startup code,
 # and converts the target's ELF file into an NSO inside the output directory.
 # You pass it the name of your CMake target, the name of the subsdk, and the name of your NSO module.
-# example usage: make_subsdk(ml_runtime_subsdk "subsdk9" "ml_runtime")
+# example usage: make_subsdk(ml_runtime_dynamic "subsdk9" "ml_runtime")
 function(make_subsdk target subsdk_name module_name)
-    target_link_libraries(${target} PRIVATE ml_subsdk_common)
-    target_link_libraries(${target} PRIVATE ml_subsdk_startup)
+    target_link_libraries(${target} PRIVATE
+        ml_subsdk_startup
+        ml_subsdk_link_options
+    )
+
     target_compile_definitions(${target} PRIVATE ML_SUBSDK_MODULE_NAME="${module_name}")
 
     set(subsdk_output_path ${ML_OUTPUT_DIR}/${subsdk_name})
@@ -56,4 +72,4 @@ function(deploy_mod deployment_name dest)
     add_dependencies(${deployment_name} ml_deploy_deps)
 endfunction()
 
-# TCP Deployment helper
+# TODO: TCP Deployment helper

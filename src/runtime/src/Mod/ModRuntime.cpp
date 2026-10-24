@@ -1,4 +1,4 @@
-#include "runtime.h"
+#include <ml/Mod/ModRuntime.h>
 
 #include <exl/hook/nx64/impl.hpp>
 #include <exl/nx/kernel/virtmem.h>

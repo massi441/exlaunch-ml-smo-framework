@@ -4,6 +4,8 @@
 
 namespace ml {
 
+// could probably make it configurable at install time, maybe later
+// probably should use offsets depending on the version instead of symbols
 void InstallFactoryHooks() {
     ActorFactoryHook::Install("_ZN19ProjectActorFactoryC2Ev");
     AreaFactoryHook::Install("_ZN18ProjectAreaFactoryC2Ev");

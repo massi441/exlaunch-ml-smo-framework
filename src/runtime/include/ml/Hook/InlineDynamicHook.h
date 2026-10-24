@@ -29,7 +29,8 @@ private:
 
 /**
  * An inline hook able to dynamically control where the program returns after the hook's Callback.
- * Note: This hook does not work as intended on Ryujinx, due to how cache flushes are emulated
+ * Note: This hook does not work as intended on Ryujinx, due to how cache flushes are emulated.
+ * It behaves as intended on Yuzu, but has not been tested on an actual switch
  * @tparam Derived The type of hook, used for CRTP
  */
 template <typename Derived>

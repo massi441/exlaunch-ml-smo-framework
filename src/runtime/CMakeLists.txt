@@ -1,17 +1,16 @@
 add_library(ml_runtime INTERFACE)
 
-option(MULTI_SUBSDK "Build the runtime as a separate subsdk" OFF)
-option(NO_RUNTIME_BUILD "Skip building the runtime, and only use its headers" OFF)
+# TODO: Add docs for each value
+option(ML_RUNTIME_BUILD_MODE "Specify the build mode of the runtime." OFF)
 
-if (USE_RUNTIME_INTERFACE)
-    set(MULTI_SUBSDK ON)
-    include(runtime-interface.cmake)
+if (ML_RUNTIME_BUILD_MODE STREQUAL "STATIC")
+    include(cmake/runtime-static.cmake)
+    target_compile_definitions(ml_runtime INTERFACE ML_STATIC_RUNTIME)
+    target_link_libraries(ml_runtime INTERFACE ml_runtime_static)
+elseif(ML_RUNTIME_BUILD_MODE STREQUAL "DYNAMIC")
+    include(cmake/runtime-dynamic.cmake)
+elseif (ML_RUNTIME_BUILD_MODE STREQUAL "INTERFACE")
+    include(cmake/runtime-interface.cmake)
 else()
-
-
-    if (MULTI_SUBSDK)
-        include(runtime-dynamic.cmake)
-    else()
-        include(runtime-static.cmake)
-    endif()
+    message(FATAL_ERROR "'ML_RUNTIME_BUILD_MODE' must be one of the following values: 'STATIC', 'DYNAMIC', 'INTERFACE'.")
 endif()

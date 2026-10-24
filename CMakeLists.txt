@@ -1,16 +1,3 @@
-# Interface that contains default configuration for any subsdk
-add_library(ml_subsdk_common INTERFACE)
-
-target_link_libraries(ml_subsdk_common INTERFACE
-    -T ${CMAKE_CURRENT_SOURCE_DIR}/cmake/linker.ld
-    -Wl,--no-whole-archive
-    -Wl,--gc-sections
-    -Wl,--hash-style=sysv
-    -Wl,--build-id=uuid
-    -Wl,-Bsymbolic # Linker resolves symbols for current module
-    -Wl,-init,rtldInit
-)
-
 include(cmake/deploy-util.cmake)
 
 # Libs
