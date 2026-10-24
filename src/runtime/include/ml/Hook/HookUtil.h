@@ -10,10 +10,6 @@ namespace ml {
 bool lookUpSymbol(uintptr_t* outAddress, const char* symbol);
 bool isExistSymbol(const char* symbol);
 
-inline uint instructionOffset(uint instCount) {
-    return instCount * sizeof(uint32_t);
-}
-
 inline uint64_t getBaseAddress() {
     return reinterpret_cast<uint64_t>(malloc) - 0x00724b94;
 }
