@@ -17,7 +17,7 @@ endif()
 # ensures that deployments triggered by deploy_mod (see below) wait on all targets to be built into the output folder
 add_custom_target(ml_deploy_deps)
 
-# An interface that contains default link options for any subsdk, and is used by make_nso below
+# An interface that contains default link options for any subsdk, and is used by make_subsdk below
 add_library(ml_subsdk_link_options INTERFACE)
 
 target_link_options(ml_subsdk_link_options INTERFACE
@@ -30,9 +30,9 @@ target_link_options(ml_subsdk_link_options INTERFACE
     -Wl,-init,rtldInit
 )
 
-# Creates a program description for a mod's exefs folder. Should be called at most once per build
-# The npdm describes the whole process, so only one npdm needs be created regardless of how many subsdk's there are
-# This function uses the provided the npdm.json file to the npdm tools and outputs it to the build directory
+# Creates a program description for a mod's exefs folder
+# The npdm describes the whole process, so only one npdm needs be created regardless
+# of how many subsdk's are part of a mod
 function(generate_npdm json_path)
     add_custom_command(
         OUTPUT ${ML_OUTPUT_DIR}/main.npdm
@@ -44,7 +44,7 @@ function(generate_npdm json_path)
 endfunction()
 
 # Creates a standalone subsdk from a target: links common flags, the startup code,
-# and converts the target's ELF file into an NSO inside the output directory.
+# and converts the target's ELF file into an NSO inside the output directory
 # You pass it the name of your CMake target, the name of the subsdk, and the name of your NSO module.
 # example usage: make_subsdk(ml_runtime_dynamic "subsdk9" "ml_runtime")
 function(make_subsdk target subsdk_name module_name)
@@ -74,7 +74,7 @@ function(deploy_mod deployment_name dest)
     # Need to cleanup any stale runtime subsdk9 from previous builds
     if (ML_RUNTIME_BUILD_MODE STREQUAL "STATIC")
         add_custom_target(${deployment_name} ALL
-            COMMAND ${CMAKE_COMMAND} -E rm ${dest}/subsdk9
+            COMMAND ${CMAKE_COMMAND} -E rm -f ${dest}/subsdk9
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${ML_OUTPUT_DIR} ${dest}
         )
     else()
