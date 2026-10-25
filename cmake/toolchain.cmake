@@ -1,8 +1,7 @@
 set(CMAKE_SYSTEM_NAME Generic-ELF)
-set(CMAKE_SYSTEM_VERSION "Marshmallow")
 set(CMAKE_SYSTEM_PROCESSOR "aarch64")
 
-# TODO: Add macos support
+# TODO: Add MacOS support
 
 # for multiplatform builds to identify that they are building for the switch
 set(SWITCH TRUE)
