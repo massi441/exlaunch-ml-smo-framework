@@ -21,3 +21,9 @@ file(GLOB_RECURSE RUNTIME_SOURCES
 target_sources(ml_runtime_static PRIVATE
     ${RUNTIME_SOURCES}
 )
+
+# Allows consumers to manually initialize the runtime if they statically link it
+target_compile_definitions(ml_runtime INTERFACE ML_STATIC_RUNTIME)
+
+# Consumers that link against ml_runtime get the static library with them
+target_link_libraries(ml_runtime INTERFACE ml_runtime_static)
