@@ -16,7 +16,7 @@ public:
 };
 
 /**
- * Writes logs to a file the SD card
+ * Writes logs to a file
  */
 class FileLogger {
 public:
@@ -28,6 +28,14 @@ public:
 protected:
     ml::ScopedFileHandle mHandle;
     uint64_t mWriteOffset = 0;
+};
+
+class TcpLogger {
+public:
+    TcpLogger() = default;
+
+    bool connect(const char* ip, int port);
+    void writeLine(std::string_view line);
 };
 
 }

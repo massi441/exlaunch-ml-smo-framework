@@ -8,6 +8,7 @@
 #include <ml/Hook/FactoryHook.h>
 #include <ml/Input/MouseKeyboardHook.h>
 #include <ml/Log/ModLogger.h>
+#include <ml/Network/Network.h>
 #include <nn/fs/fs_mount.h>
 
 namespace ml {
@@ -21,11 +22,8 @@ void ModRuntime::Initialize() {
 
     nn::fs::MountSdCardForDebug("sd");
 
-    ml::ModLogger::Initialize(); // must be initialized after the sd card is mounted for the file logger to work
-
-    // TODO: Init network
-
-    ml::InstallFactoryHooks();
+    ml::Network::Initialize();
+    ml::ModLogger::Initialize();
 }
 
 void initLibs() {
@@ -37,6 +35,13 @@ void initLibs() {
 }
 
 void installHooks() {
+    // could probably make the factory hooks configurable at install time, maybe later
+    // probably should use offsets depending on the version instead of symbols
+    ActorFactoryHook::Install("_ZN19ProjectActorFactoryC2Ev");
+    AreaFactoryHook::Install("_ZN18ProjectAreaFactoryC2Ev");
+    CameraPoserFactoryHook::Install("_ZN25ProjectCameraPoserFactoryC1Ev");
+    PlayerFactoryHook::Install("_ZN13PlayerFactoryC2Ev");
+
     MouseKeyboardHook::Install();
 }
 

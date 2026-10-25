@@ -100,6 +100,4 @@ using AreaFactoryHook = ml::FactoryHook<ProjectAreaFactory, al::NameToCreator<al
 using CameraPoserFactoryHook = ml::FactoryHook<ProjectCameraPoserFactory, al::NameToCreator<al::CameraPoserCreatorFunction>>;
 using PlayerFactoryHook = ml::FactoryHook<PlayerFactory, al::NameToCreator<PlayerCreatorFunction>>;
 
-void InstallFactoryHooks();
-
 }
