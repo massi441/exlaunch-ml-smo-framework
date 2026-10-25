@@ -22,8 +22,11 @@ void ModRuntime::Initialize() {
 
     nn::fs::MountSdCardForDebug("sd");
 
+    ml::ModLogger::InitializeFile();
+
     ml::Network::Initialize();
-    ml::ModLogger::Initialize();
+
+    ml::ModLogger::InitializeNetwork();
 }
 
 void initLibs() {

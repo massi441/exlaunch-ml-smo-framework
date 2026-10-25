@@ -13,7 +13,8 @@ namespace ml {
 class ModLogger final {
     NO_COPY_NO_MOVE(ModLogger)
 public:
-    static void Initialize();
+    static void InitializeFile();
+    static void InitializeNetwork();
     static void WriteLog(const char* format, va_list args);
     static void SetLogLevel(LogLevel logLevel);
     static LogLevel GetLogLevel();

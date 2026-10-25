@@ -38,10 +38,14 @@ void ModLogger::writeLog(const char* format, va_list args) {
     mFileLogger.writeLine(std::string_view(mBuffer, lineSize + 1)); // +1 includes the newline character
 }
 
-void ModLogger::Initialize() {
+void ModLogger::InitializeFile() {
     if (ModLogger::Instance()->mFileLogger.open(LogFilePath)) {
         LOG_INFORMATION("File logger initialized!");
     }
+}
+
+void ModLogger::InitializeNetwork() {
+    // TODO: Initialize network logger
 }
 
 void ModLogger::SetLogLevel(LogLevel logLevel) {
