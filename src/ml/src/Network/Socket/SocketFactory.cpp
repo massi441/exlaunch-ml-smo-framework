@@ -1,8 +1,8 @@
 #include <ml/Network/Socket/SocketFactory.h>
 
+#include <ml/Log/LogUtil.h>
 #include <ml/Network/NNErrorMapper.h>
 #include <ml/Network/SocketUtil.h>
-#include <ml/Util/Logger.h>
 
 namespace ml {
 

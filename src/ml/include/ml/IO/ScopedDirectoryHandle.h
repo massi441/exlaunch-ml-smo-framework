@@ -24,6 +24,14 @@ public:
         }
     }
 
+    int64_t get() const {
+        return mHandle;
+    }
+
+    bool isValid() const {
+        return mHandle != -1;
+    }
+
 private:
     int64_t mHandle = -1;
 };

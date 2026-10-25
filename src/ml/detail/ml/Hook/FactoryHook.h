@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mallow/mallow.hpp>
+#include <exl/hook/trampoline.hpp>
 #include <vector>
 
 #include "Library/Factory/Factory.h"
@@ -17,9 +17,9 @@ namespace ml {
  * @tparam TFactoryEntry The type of the factory entry
  */
 template <typename TFactory, typename TFactoryEntry>
-class FactoryHook : public mallow::hook::Trampoline<FactoryHook<TFactory, TFactoryEntry>> {
+class FactoryHook : public exl::hook::impl::TrampolineHook<FactoryHook<TFactory, TFactoryEntry>> {
 public:
-    using Base = mallow::hook::Trampoline<FactoryHook>;
+    using Base = exl::hook::impl::TrampolineHook<FactoryHook>;
     using FactoryEntry = TFactoryEntry;
     friend Base;
 

@@ -7,10 +7,9 @@ target_include_directories(ml_runtime_static PUBLIC ${ML_RUNTIME_DIR}/include)
 
 target_link_libraries(ml_runtime_static PRIVATE ml_core_cpp)
 
-# Compiles marshmallow and exlaunch locally. Unlike in multi-subsdk mode, marshmallow and exlaunch don't
-# need all their symbols kept since we already know which ones are used by the mod at link time
+# Compiles exlaunch locally. Unlike in multi-subsdk mode, exlaunch doesn'tm need all
+# its symbols kept since we already know which ones are used by the mod at link time
 target_link_libraries(ml_runtime_static PUBLIC
-    marshmallow
     exlaunch
 )
 

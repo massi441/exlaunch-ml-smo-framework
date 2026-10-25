@@ -1,10 +1,10 @@
 #include <ml/IO/FileUtil.h>
 
-#include <mallow/config.hpp>
 #include <ml/Core/String/StringUtil.h>
 #include <ml/Core/Util/MathHelpers.h>
 #include <ml/IO/ScopedFileHandle.h>
-#include <ml/Util/Logger.h>
+#include <ml/Log/LogUtil.h>
+#include <nn/fs/fs_directories.h>
 
 namespace ml {
 
@@ -62,6 +62,14 @@ bool isExistDir(const char* filePath) {
     nn::Result result = nn::fs::GetEntryType(&type, filePath);
 
     return result.IsSuccess() && type == nn::fs::DirectoryEntryType_Directory;
+}
+
+bool clearFile(nn::fs::FileHandle fileHandle) {
+    return nn::fs::SetFileSize(fileHandle, 0).IsSuccess();
+}
+
+bool appendFile(nn::fs::FileHandle fileHandle, uint64_t offset, const void* buffer, size_t bufferSize) {
+    return nn::fs::WriteFile(fileHandle, offset, buffer, bufferSize, nn::fs::WriteOption::CreateOption(nn::fs::WriteOptionFlag_Flush)).IsSuccess();
 }
 
 bool isExistFile(const char* filePath) {

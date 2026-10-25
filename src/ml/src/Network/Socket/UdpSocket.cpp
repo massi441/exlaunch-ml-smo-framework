@@ -1,7 +1,7 @@
 #include <ml/Network/Socket/UdpSocket.h>
 
+#include <ml/Log/LogUtil.h>
 #include <ml/Network/NNErrorMapper.h>
-#include <ml/Util/Logger.h>
 
 namespace ml {
 

@@ -12,7 +12,6 @@ target_compile_definitions(ml_runtime_dynamic PRIVATE ML_DYNAMIC_RUNTIME)
 # Mallow and exlaunch need all their symbols exported to make sure other subsdk's can find them at runtime
 target_link_libraries(ml_runtime_dynamic PRIVATE
     -Wl,--whole-archive
-    marshmallow
     exlaunch
     -Wl,--no-whole-archive
 )

@@ -1,6 +1,6 @@
 #include <ml/Network/NNErrorMapper.h>
 
-#include <ml/Util/Logger.h>
+#include <ml/Log/LogUtil.h>x
 #include <nn/socket.hpp>
 
 namespace ml {

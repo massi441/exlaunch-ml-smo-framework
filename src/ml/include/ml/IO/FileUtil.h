@@ -3,6 +3,7 @@
 #include <ml/Core/Container/Array.h>
 #include <ml/Core/Util/Types.h>
 #include <ml/Export.h>
+#include <nn/fs/fs_types.h>
 #include <string>
 
 namespace nn::fs {
@@ -16,7 +17,8 @@ enum class FileOpenMode {
     Write = 1 << 1,
     Append = 1 << 2,
 
-    ReadWrite = Read | Write
+    ReadWrite = Read | Write,
+    WriteAppend = Write | Append
 };
 
 /**
@@ -34,7 +36,7 @@ ML_EXPORT bool openOrCreateFile(nn::fs::FileHandle* fileHandle, const char* file
  * @param filePath The path of the file
  * @param startOffset The offset in the file to start reading at
  * @param readSize The amount of bytes to read
- * @return True if the file was read, false otherwise
+ * @return true if the file was read, false otherwise
  */
 ML_EXPORT bool readFile(ml::Array<byte>* outBuffer, const char* filePath, uint64_t startOffset = 0, int64_t readSize = -1);
 
@@ -56,6 +58,23 @@ ML_EXPORT bool writeFile(const char* filePath, const void* data, size_t size);
 ML_EXPORT bool isExistPath(const char* filePath);
 ML_EXPORT bool isExistFile(const char* filePath);
 ML_EXPORT bool isExistDir(const char* filePath);
+
+/**
+ * Clears the contents of a file by setting its size to 0
+ * @param fileHandle The file handle
+ * @return true if the operation was successful, false otherwise
+ */
+ML_EXPORT bool clearFile(nn::fs::FileHandle fileHandle);
+
+/**
+ * Writes a buffer to a file in Append mode
+ * @param fileHandle The file handle
+ * @param offset The offset to start writing from
+ * @param buffer The buffer holding the data to append to the file
+ * @param bufferSize The size of the buffer
+ * @return true if the operation was successful, false otherwise
+ */
+ML_EXPORT bool appendFile(nn::fs::FileHandle fileHandle, uint64_t offset, const void* buffer, size_t bufferSize);
 
 /**
  * Gets the base path where all custom mod files are stored

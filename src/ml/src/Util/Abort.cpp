@@ -3,7 +3,7 @@
 #include <basis/seadRawPrint.h>
 #include <cstdarg>
 #include <cstdio>
-#include <ml/Util/Logger.h>
+#include <ml/Log/LogUtil.h>
 
 namespace ml {
 
@@ -16,7 +16,7 @@ namespace {
     LOG_FATAL("%s", message);
     sead::system::HaltWithDetail(__FILE__, __LINE__, "%s", message);
 
-    UNREACHABLE;
+    __builtin_unreachable();
 }
 
 }

@@ -1,7 +1,6 @@
 #include <ml/Network/Socket/TcpSocket.h>
 
 #include <ml/Network/NNErrorMapper.h>
-#include <ml/Util/Logger.h>
 #include <nn/socket.hpp>
 
 namespace ml {

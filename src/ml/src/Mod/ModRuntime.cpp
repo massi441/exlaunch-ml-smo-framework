@@ -5,9 +5,10 @@
 #include <exl/patch/patcher_impl.hpp>
 #include <exl/util/sys/cur_proc_handle.hpp>
 #include <exl/util/sys/mem_layout.hpp>
-#include <mallow/mallow.hpp>
 #include <ml/Hook/FactoryHook.h>
 #include <ml/Input/MouseKeyboardHook.h>
+#include <ml/Log/GlobalLogger.h>
+#include <nn/fs/fs_mount.h>
 
 namespace ml {
 
@@ -20,11 +21,9 @@ void ModRuntime::Initialize() {
 
     nn::fs::MountSdCardForDebug("sd");
 
-    mallow::net::initializeNetwork();
+    ml::GlobalLogger::Initialize(); // must be initialized after the sd card is mounted for the file logger to work
 
-// #ifdef ENABLE_LOG --> Will implement later
-    mallow::init::initLogging();
-// #endif
+    // TODO: Init network
 
     ml::InstallFactoryHooks();
 }
@@ -35,10 +34,6 @@ void initLibs() {
     exl::patch::impl::InitPatcherImpl();
     exl::util::proc_handle::Get();
     exl::hook::nx64::Initialize();
-
-    // This sink writes to the debug console. This is useful for emulators.
-    static mallow::log::sink::DebugPrintSink debugPrintSink;
-    addLogSink(&debugPrintSink);
 }
 
 void installHooks() {
@@ -47,4 +42,13 @@ void installHooks() {
 
 }
 
+// Symbol that exlaunch needs, we could add logging before aborting later on
+namespace exl::diag {
+void WEAK NORETURN NOINLINE AbortImpl(const AbortCtx& ctx) {
+    svcBreak(ctx.isAssertion ? BreakReason_Assert : BreakReason_Panic, ctx.value, 0);
+
+    UNREACHABLE;
+}
+
+}
 
