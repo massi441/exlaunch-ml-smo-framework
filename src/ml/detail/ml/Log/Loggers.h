@@ -1,6 +1,8 @@
 #pragma once
 
+#include <memory>
 #include <ml/IO/ScopedFileHandle.h>
+#include <ml/Network/Socket/TcpSocket.h>
 #include <string_view>
 
 namespace ml {
@@ -36,6 +38,9 @@ public:
 
     bool connect(const char* ip, int port);
     void writeLine(std::string_view line);
+
+private:
+    std::unique_ptr<TcpSocket> mSocket;
 };
 
 }

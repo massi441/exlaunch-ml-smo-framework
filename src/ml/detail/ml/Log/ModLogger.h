@@ -25,6 +25,7 @@ private:
     sead::CriticalSection mCriticalSection;
     DebugLogger mDebugLogger;
     FileLogger mFileLogger;
+    TcpLogger mTcpLogger;
     LogLevel mLogLevel;
 
     void writeLog(const char* format, va_list args);

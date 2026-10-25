@@ -36,6 +36,7 @@ void ModLogger::writeLog(const char* format, va_list args) {
 
     mDebugLogger.writeLine(std::string_view(mBuffer, lineSize));
     mFileLogger.writeLine(std::string_view(mBuffer, lineSize + 1)); // +1 includes the newline character
+    mTcpLogger.writeLine(std::string_view(mBuffer, lineSize + 1));
 }
 
 void ModLogger::InitializeFile() {
@@ -45,7 +46,9 @@ void ModLogger::InitializeFile() {
 }
 
 void ModLogger::InitializeNetwork() {
-    // TODO: Initialize network logger
+    if (ModLogger::Instance()->mTcpLogger.connect("127.0.0.1", 3080)) {
+        LOG_INFORMATION("TCP logger initialized!");
+    }
 }
 
 void ModLogger::SetLogLevel(LogLevel logLevel) {
