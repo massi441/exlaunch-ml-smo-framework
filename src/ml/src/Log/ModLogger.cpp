@@ -1,4 +1,4 @@
-#include <ml/Log/GlobalLogger.h>
+#include <ml/Log/ModLogger.h>
 
 #include <cstdio>
 #include <math/seadMathCalcCommon.h>
@@ -16,13 +16,13 @@ constexpr const char* LogFilePath = "sd:/mod-logs.txt"; // could potentially add
 
 // TODO: Queue logs to separate log write thread
 
-GlobalLogger::GlobalLogger() :
+ModLogger::ModLogger() :
     mCriticalSection(nullptr, sead::IDisposer::HeapNullOption::DoNotAppendDisposerIfNoHeapSpecified)
 {
 
 }
 
-void GlobalLogger::writeLog(const char* format, va_list args) {
+void ModLogger::writeLog(const char* format, va_list args) {
     sead::ScopedLock lock(&mCriticalSection);
 
     int bytesWritten = std::vsnprintf(mBuffer, sizeof(mBuffer), format, args);
@@ -38,26 +38,26 @@ void GlobalLogger::writeLog(const char* format, va_list args) {
     mFileLogger.writeLine(std::string_view(mBuffer, lineSize + 1)); // +1 includes the newline character
 }
 
-void GlobalLogger::Initialize() {
-    if (GlobalLogger::Instance()->mFileLogger.open(LogFilePath)) {
+void ModLogger::Initialize() {
+    if (ModLogger::Instance()->mFileLogger.open(LogFilePath)) {
         LOG_INFORMATION("File logger initialized!");
     }
 }
 
-void GlobalLogger::SetLogLevel(LogLevel logLevel) {
-    GlobalLogger::Instance()->mLogLevel = logLevel;
+void ModLogger::SetLogLevel(LogLevel logLevel) {
+    ModLogger::Instance()->mLogLevel = logLevel;
 }
 
-LogLevel GlobalLogger::GetLogLevel() {
-    return GlobalLogger::Instance()->mLogLevel;
+LogLevel ModLogger::GetLogLevel() {
+    return ModLogger::Instance()->mLogLevel;
 }
 
-bool GlobalLogger::IsLogLevelEnabled(LogLevel logLevel) {
-    return logLevel >= GlobalLogger::Instance()->mLogLevel;
+bool ModLogger::IsLogLevelEnabled(LogLevel logLevel) {
+    return logLevel >= ModLogger::Instance()->mLogLevel;
 }
 
-void GlobalLogger::WriteLog(const char* format, va_list args) {
-    GlobalLogger::Instance()->writeLog(format, args);
+void ModLogger::WriteLog(const char* format, va_list args) {
+    ModLogger::Instance()->writeLog(format, args);
 }
 
 }

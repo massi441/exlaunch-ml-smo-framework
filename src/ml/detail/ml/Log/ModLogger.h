@@ -10,8 +10,8 @@ namespace ml {
  * Formats and forwards log calls to all its loggers.
  * Is thread safe.
  */
-class GlobalLogger final {
-    NO_COPY_NO_MOVE(GlobalLogger)
+class ModLogger final {
+    NO_COPY_NO_MOVE(ModLogger)
 public:
     static void Initialize();
     static void WriteLog(const char* format, va_list args);
@@ -28,12 +28,12 @@ private:
 
     void writeLog(const char* format, va_list args);
 
-    static GlobalLogger* Instance() {
-        static GlobalLogger instance;
+    static ModLogger* Instance() {
+        static ModLogger instance;
         return &instance;
     }
 
-    GlobalLogger();
+    ModLogger();
 };
 
 }

@@ -7,7 +7,7 @@
 #include <exl/util/sys/mem_layout.hpp>
 #include <ml/Hook/FactoryHook.h>
 #include <ml/Input/MouseKeyboardHook.h>
-#include <ml/Log/GlobalLogger.h>
+#include <ml/Log/ModLogger.h>
 #include <nn/fs/fs_mount.h>
 
 namespace ml {
@@ -21,7 +21,7 @@ void ModRuntime::Initialize() {
 
     nn::fs::MountSdCardForDebug("sd");
 
-    ml::GlobalLogger::Initialize(); // must be initialized after the sd card is mounted for the file logger to work
+    ml::ModLogger::Initialize(); // must be initialized after the sd card is mounted for the file logger to work
 
     // TODO: Init network
 
