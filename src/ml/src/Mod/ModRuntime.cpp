@@ -7,6 +7,7 @@
 #include <exl/util/sys/mem_layout.hpp>
 #include <mallow/mallow.hpp>
 #include <ml/Hook/FactoryHook.h>
+#include <ml/Input/MouseKeyboardHook.h>
 
 namespace ml {
 
@@ -41,7 +42,7 @@ void initLibs() {
 }
 
 void installHooks() {
-    // TODO: Initialize mouse, keyboard, network
+    MouseKeyboardHook::Install();
 }
 
 }
