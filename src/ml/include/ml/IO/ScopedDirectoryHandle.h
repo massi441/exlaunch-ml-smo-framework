@@ -15,13 +15,29 @@ class ScopedDirectoryHandle final {
 public:
     ScopedDirectoryHandle() = default;
 
+    ScopedDirectoryHandle(ScopedDirectoryHandle&& other) noexcept {
+        mHandle = other.mHandle;
+        other.mHandle = -1;
+    }
+
+    ScopedDirectoryHandle& operator=(ScopedDirectoryHandle&& other) noexcept {
+        if (this == &other) {
+            return *this;
+        }
+
+        this->close();
+
+        mHandle = other.mHandle;
+        other.mHandle = -1;
+
+        return *this;
+    }
+
     operator nn::fs::DirectoryHandle*() { return reinterpret_cast<nn::fs::DirectoryHandle*>(&mHandle); }
     operator nn::fs::DirectoryHandle&() { return reinterpret_cast<nn::fs::DirectoryHandle&>(mHandle); }
 
     ~ScopedDirectoryHandle() {
-        if (mHandle != -1) {
-            nn::fs::CloseDirectory(*this);
-        }
+        this->close();
     }
 
     int64_t get() const {
@@ -34,6 +50,12 @@ public:
 
 private:
     int64_t mHandle = -1;
+
+    void close() {
+        if (mHandle != -1) {
+            nn::fs::CloseDirectory(*this);
+        }
+    }
 };
 
 }

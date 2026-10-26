@@ -15,6 +15,24 @@ class ScopedFileHandle final {
 public:
     ScopedFileHandle() = default;
 
+    ScopedFileHandle(ScopedFileHandle&& other) noexcept {
+        mHandle = other.mHandle;
+        other.mHandle = -1;
+    }
+
+    ScopedFileHandle& operator=(ScopedFileHandle&& other) noexcept {
+        if (this == &other) {
+            return *this;
+        }
+
+        this->close();
+
+        mHandle = other.mHandle;
+        other.mHandle = -1;
+
+        return *this;
+    }
+
     /**
      * Implicitly converts the current ScopedFileHandle to a nn::fs::FileHandle*
      * Makes it easy to pass the scoped handle to functions writing to an out nn::fs::FileHandle* parameter
@@ -23,9 +41,7 @@ public:
     operator nn::fs::FileHandle&() { return reinterpret_cast<nn::fs::FileHandle&>(mHandle); }
 
     ~ScopedFileHandle() {
-        if (mHandle != -1) {
-            nn::fs::CloseFile(*this);
-        }
+        this->close();
     }
 
     int64_t get() const {
@@ -38,6 +54,12 @@ public:
 
 private:
     int64_t mHandle = -1;
+
+    void close() {
+        if (mHandle != -1) {
+            nn::fs::CloseFile(*this);
+        }
+    }
 };
 
 }
