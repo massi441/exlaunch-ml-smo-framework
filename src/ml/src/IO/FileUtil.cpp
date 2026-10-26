@@ -3,7 +3,7 @@
 #include <ml/Core/String/StringUtil.h>
 #include <ml/Core/Util/MathHelpers.h>
 #include <ml/IO/ScopedFileHandle.h>
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/Log.h>
 #include <nn/fs/fs_directories.h>
 
 namespace ml {

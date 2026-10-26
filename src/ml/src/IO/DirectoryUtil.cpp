@@ -3,7 +3,7 @@
 #include <ml/Core/Container/Array.h>
 #include <ml/IO/DirectoryEntry.h>
 #include <ml/IO/ScopedDirectoryHandle.h>
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/Log.h>
 
 namespace ml {
 

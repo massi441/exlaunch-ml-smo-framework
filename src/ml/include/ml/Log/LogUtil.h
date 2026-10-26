@@ -19,8 +19,8 @@ LogLevel getLogLevel();
  */
 void setLogLevel(LogLevel logLevel);
 
-void logLine(const char* fmt, ...);
-void logLeveled(ml::LogLevel logLevel, const char* fmt, ...);
+void logLineImpl(const char* fmt, ...);
+void logLeveledImpl(ml::LogLevel logLevel, const char* fmt, ...);
 void logLeveledV(ml::LogLevel logLevel, const char* fmt, va_list args);
 
 }

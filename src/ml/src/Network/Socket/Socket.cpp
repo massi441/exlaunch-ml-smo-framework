@@ -1,6 +1,6 @@
 #include <ml/Network/Socket/Socket.h>
 
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/Log.h>
 #include <ml/Network/NNErrorMapper.h>
 #include <nn/socket.hpp>
 

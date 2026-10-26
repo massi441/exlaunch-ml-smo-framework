@@ -12,26 +12,31 @@ namespace ml {
 class ModLogger final {
     NO_COPY_NO_MOVE(ModLogger)
 public:
+    static ModLogger* Instance() {
+        static ModLogger instance;
+        return &instance;
+    }
+
     /**
      * Initializes the file logger
      */
-    static void InitializeFile();
+    void initializeFile();
 
     /**
      * Initializes the TCP logger
      */
-    static void InitializeNetwork();
+    void initializeNetwork();
 
     /**
      * Formats and logs a message with all initialized loggers
      */
-    static void WriteLog(const char* fmt, va_list args);
+    void writeLog(const char* format, va_list args);
 
-    static void SetLogLevel(LogLevel logLevel);
+    void setLogLevel(LogLevel logLevel);
 
-    static LogLevel GetLogLevel();
+    LogLevel getLogLevel() const;
 
-    static bool IsLogLevelEnabled(LogLevel logLevel);
+    bool isLogLevelEnabled(LogLevel logLevel) const;
 
 private:
     char mBuffer[1024] = {}; // potentially use ml::Array<char> and inject size into it
@@ -39,13 +44,6 @@ private:
     FileLogger mFileLogger;
     TcpLogger mTcpLogger;
     LogLevel mLogLevel;
-
-    void writeLog(const char* format, va_list args);
-
-    static ModLogger* Instance() {
-        static ModLogger instance;
-        return &instance;
-    }
 
     ModLogger();
 };

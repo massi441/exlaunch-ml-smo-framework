@@ -2,7 +2,7 @@
 
 #include <ml/Core/String/StringUtil.h>
 #include <ml/Log/DebugPrint.h>
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/Log.h>
 #include <prim/seadScopedLock.h>
 
 namespace ml {
@@ -40,32 +40,28 @@ void ModLogger::writeLog(const char* format, va_list args) {
     mTcpLogger.writeLine(line);
 }
 
-void ModLogger::InitializeFile() {
-    if (ModLogger::Instance()->mFileLogger.open(LogFilePath)) {
+void ModLogger::initializeFile() {
+    if (mFileLogger.open(LogFilePath)) {
         LOG_INFORMATION("File logger initialized!");
     }
 }
 
-void ModLogger::InitializeNetwork() {
-    if (ModLogger::Instance()->mTcpLogger.connect("127.0.0.1", 3080)) {
+void ModLogger::initializeNetwork() {
+    if (mTcpLogger.connect("127.0.0.1", 3080)) {
         LOG_INFORMATION("TCP logger initialized!");
     }
 }
 
-void ModLogger::SetLogLevel(LogLevel logLevel) {
-    ModLogger::Instance()->mLogLevel = logLevel;
+void ModLogger::setLogLevel(LogLevel logLevel) {
+    mLogLevel = logLevel;
 }
 
-LogLevel ModLogger::GetLogLevel() {
-    return ModLogger::Instance()->mLogLevel;
+LogLevel ModLogger::getLogLevel() const {
+    return mLogLevel;
 }
 
-bool ModLogger::IsLogLevelEnabled(LogLevel logLevel) {
-    return logLevel >= ModLogger::Instance()->mLogLevel;
-}
-
-void ModLogger::WriteLog(const char* fmt, va_list args) {
-    ModLogger::Instance()->writeLog(fmt, args);
+bool ModLogger::isLogLevelEnabled(LogLevel logLevel) const {
+    return logLevel >= mLogLevel;
 }
 
 }

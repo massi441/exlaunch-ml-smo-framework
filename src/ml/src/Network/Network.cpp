@@ -1,7 +1,7 @@
 #include <ml/Network/Network.h>
 
 #include <exl/lib.hpp>
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/Log.h>
 #include <ml/Util/Abort.h>
 #include <nn/nifm.h>
 #include <nn/socket.hpp>

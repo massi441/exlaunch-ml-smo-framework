@@ -2,7 +2,7 @@
 
 #include <concepts>
 
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/Log.h>
 
 namespace ml {
 

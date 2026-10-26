@@ -1,36 +1,36 @@
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/Log.h>
 
 #include <ml/Log/ModLogger.h>
 
 namespace ml {
 
 LogLevel getLogLevel() {
-    return ModLogger::GetLogLevel();
+    return ModLogger::Instance()->getLogLevel();
 }
 
 void setLogLevel(LogLevel logLevel) {
-    ModLogger::SetLogLevel(logLevel);
+    ModLogger::Instance()->setLogLevel(logLevel);
 }
 
-void logLine(const char* fmt, ...) {
+void logLineImpl(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    ModLogger::WriteLog(fmt, args);
+    ModLogger::Instance()->writeLog(fmt, args);
     va_end(args);
 }
 
-void logLeveled(LogLevel logLevel, const char* fmt, ...) {
-    if (ModLogger::IsLogLevelEnabled(logLevel)) {
+void logLeveledImpl(LogLevel logLevel, const char* fmt, ...) {
+    if (ModLogger::Instance()->isLogLevelEnabled(logLevel)) {
         va_list args;
         va_start(args, fmt);
-        ModLogger::WriteLog(fmt, args);
+        ModLogger::Instance()->writeLog(fmt, args);
         va_end(args);
     }
 }
 
 void logLeveledV(ml::LogLevel logLevel, const char* fmt, va_list args) {
-    if (ModLogger::IsLogLevelEnabled(logLevel)) {
-        ml::ModLogger::WriteLog(fmt, args);
+    if (ModLogger::Instance()->isLogLevelEnabled(logLevel)) {
+        ModLogger::Instance()->writeLog(fmt, args);
     }
 }
 
