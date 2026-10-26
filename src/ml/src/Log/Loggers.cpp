@@ -1,29 +1,11 @@
 #include <ml/Log/Loggers.h>
 
-#include <exl/nx/kernel/svc.h>
-#include <math/seadMathCalcCommon.h>
 #include <ml/IO/FileUtil.h>
-#include <ml/Log/LogUtil.h>
+#include <ml/Log/DebugPrint.h>
 #include <ml/Network/Socket/SocketFactory.h>
 #include <ml/Util/Abort.h>
 
 namespace ml {
-
-void svcPrintFmt(const char* fmt, ...) {
-    constexpr int bufferSize = 1024;
-
-    char buffer[bufferSize];
-    va_list args;
-    va_start(args, fmt);
-    int length = sead::Mathi::min(std::vsprintf(buffer, fmt, args), bufferSize);
-    va_end(args);
-
-    svcOutputDebugString(buffer, length);
-}
-
-void svcPrint(const char* message, size_t messageSize) {
-    svcOutputDebugString(message, messageSize);
-}
 
 bool FileLogger::open(const char* filePath) {
     if (!ml::openOrCreateFile(mHandle, filePath, ml::FileOpenMode::WriteAppend)) {
@@ -31,7 +13,7 @@ bool FileLogger::open(const char* filePath) {
     }
 
     if (!ml::clearFile(mHandle)) {
-        LOG_ERROR("Failed to clear log file at %s", filePath); // should probably swallow the error
+        ml::svcPrintFmt("Failed to clear log file at %s", filePath); // should probably swallow the error
         nn::fs::CloseFile(mHandle);
     }
 

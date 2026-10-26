@@ -1,7 +1,7 @@
 #include <ml/Log/ModLogger.h>
 
-#include <cstdio>
-#include <math/seadMathCalcCommon.h>
+#include <ml/Core/String/StringUtil.h>
+#include <ml/Log/DebugPrint.h>
 #include <ml/Log/LogUtil.h>
 #include <prim/seadScopedLock.h>
 
@@ -25,12 +25,11 @@ ModLogger::ModLogger() :
 void ModLogger::writeLog(const char* format, va_list args) {
     sead::ScopedLock lock(&mCriticalSection);
 
-    int bytesWritten = std::vsnprintf(mBuffer, sizeof(mBuffer), format, args);
-    if (bytesWritten <= 0) {
+    int lineSize = ml::vsnprintf(mBuffer, sizeof(mBuffer), format, args);
+    if (lineSize <= 0) {
         return;
     }
 
-    int lineSize = sead::Mathi::min(bytesWritten, sizeof(mBuffer) - 1); // vsnprintf returns the full size that would have been written, even if the result was truncated
     mBuffer[lineSize] = '\n';
 
     ml::svcPrint(mBuffer, lineSize); // debug print, emulators already add a new line to the log

@@ -6,20 +6,7 @@
 
 namespace ml {
 
-/**
- * Formats and prints a message to the debug console using svcOutputDebugString
- * The message must be under 1024 bytes long.
- * @param fmt The format of the message
- * @param ... The arguments of the format
- */
-void svcPrintFmt(const char* fmt, ...);
 
-/**
- * Prints a message to the debug console using svcOutputDebugString
- * @param message The message to print
- * @param messageSize The size of the message
- */
-void svcPrint(const char* message, size_t messageSize);
 
 /**
  * Writes logs to a file

@@ -1,9 +1,8 @@
 #include <ml/Util/Abort.h>
 
 #include <basis/seadRawPrint.h>
-#include <cstdarg>
-#include <cstdio>
-#include <ml/Log/LogUtil.h>
+#include <ml/Core/String/StringUtil.h>
+#include <ml/Log/DebugPrint.h>
 
 namespace ml {
 
@@ -11,9 +10,9 @@ namespace {
 
 [[noreturn]] void abortV(const char* fmt, va_list args) {
     char message[0x400];
-    std::vsnprintf(message, sizeof(message), fmt, args);
+    int messageLength = ml::vsnprintf(message, sizeof(message), fmt, args);
 
-    LOG_FATAL("%s", message);
+    ml::svcPrint(message, messageLength);
     sead::system::HaltWithDetail(__FILE__, __LINE__, "%s", message);
 
     __builtin_unreachable();
