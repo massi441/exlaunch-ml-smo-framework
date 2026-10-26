@@ -40,6 +40,12 @@ void ModLogger::writeLog(const char* format, va_list args) {
     mTcpLogger.writeLine(line);
 }
 
+void ModLogger::writeLog(LogLevel logLevel, const char* format, va_list args) {
+    if (this->isLogLevelEnabled(logLevel)) {
+        this->writeLog(format, args);
+    }
+}
+
 void ModLogger::initializeFile() {
     if (mFileLogger.open(LogFilePath)) {
         LOG_INFORMATION("File logger initialized!");

@@ -32,11 +32,14 @@ public:
      */
     void writeLog(const char* format, va_list args);
 
+    /**
+     * Formats and logs a message with all initialized loggers, if the level is enabled
+     */
+    void writeLog(LogLevel logLevel, const char* format, va_list args);
+
     void setLogLevel(LogLevel logLevel);
 
     LogLevel getLogLevel() const;
-
-    bool isLogLevelEnabled(LogLevel logLevel) const;
 
 private:
     char mBuffer[1024] = {}; // potentially use ml::Array<char> and inject size into it
@@ -46,6 +49,8 @@ private:
     LogLevel mLogLevel;
 
     ModLogger();
+
+    bool isLogLevelEnabled(LogLevel logLevel) const;
 };
 
 }
