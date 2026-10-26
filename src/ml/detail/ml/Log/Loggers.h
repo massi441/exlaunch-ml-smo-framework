@@ -8,14 +8,11 @@
 namespace ml {
 
 /**
- * Writes log to the console using svcOutputDebugString
+ * Prints a message to the debug console using svcOutputDebugString
+ * @param message The message to print
+ * @param messageSize The size of the message
  */
-class DebugLogger {
-public:
-    DebugLogger() = default;
-
-    void writeLine(std::string_view line); // will keep it non-static in case state is added later
-};
+void svcPrint(const char* message, size_t messageSize);
 
 /**
  * Writes logs to a file
@@ -32,6 +29,9 @@ protected:
     uint64_t mWriteOffset = 0;
 };
 
+/**
+ * Sends logs over a TCP connection
+ */
 class TcpLogger {
 public:
     TcpLogger() = default;

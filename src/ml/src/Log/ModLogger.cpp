@@ -3,7 +3,6 @@
 #include <cstdio>
 #include <math/seadMathCalcCommon.h>
 #include <ml/Log/LogUtil.h>
-#include <ml/Util/Abort.h>
 #include <prim/seadScopedLock.h>
 
 namespace ml {
@@ -19,7 +18,7 @@ constexpr const char* LogFilePath = "sd:/mod-logs.txt"; // could potentially add
 ModLogger::ModLogger() :
     mCriticalSection(nullptr, sead::IDisposer::HeapNullOption::DoNotAppendDisposerIfNoHeapSpecified)
 {
-
+    mLogLevel = LogLevel::Debug;
 }
 
 void ModLogger::writeLog(const char* format, va_list args) {
@@ -30,13 +29,15 @@ void ModLogger::writeLog(const char* format, va_list args) {
         return;
     }
 
-    // vsnprintf returns the full size that would have been written, even if the result was truncated
-    int lineSize = sead::Mathi::min(bytesWritten, sizeof(mBuffer) - 1);
+    int lineSize = sead::Mathi::min(bytesWritten, sizeof(mBuffer) - 1); // vsnprintf returns the full size that would have been written, even if the result was truncated
     mBuffer[lineSize] = '\n';
 
-    mDebugLogger.writeLine(std::string_view(mBuffer, lineSize));
-    mFileLogger.writeLine(std::string_view(mBuffer, lineSize + 1)); // +1 includes the newline character
-    mTcpLogger.writeLine(std::string_view(mBuffer, lineSize + 1));
+    ml::svcPrint(mBuffer, lineSize); // debug print, emulators already add a new line to the log
+
+    std::string_view line = std::string_view(mBuffer, lineSize + 1); // +1 includes the newline character
+
+    mFileLogger.writeLine(line);
+    mTcpLogger.writeLine(line);
 }
 
 void ModLogger::InitializeFile() {
@@ -63,8 +64,8 @@ bool ModLogger::IsLogLevelEnabled(LogLevel logLevel) {
     return logLevel >= ModLogger::Instance()->mLogLevel;
 }
 
-void ModLogger::WriteLog(const char* format, va_list args) {
-    ModLogger::Instance()->writeLog(format, args);
+void ModLogger::WriteLog(const char* fmt, va_list args) {
+    ModLogger::Instance()->writeLog(fmt, args);
 }
 
 }

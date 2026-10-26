@@ -8,7 +8,15 @@ ML_EXPORT_SCOPE_BEGIN
 
 namespace ml {
 
+/**
+ * Returns the current log level of the mod logger
+ */
 LogLevel getLogLevel();
+
+/**
+ * Sets the current log level of the mod logger.
+ * @param logLevel The new level of logging
+ */
 void setLogLevel(LogLevel logLevel);
 
 void logLine(const char* fmt, ...);

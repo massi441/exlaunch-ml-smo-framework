@@ -2,15 +2,10 @@
 
 #include <exl/nx/kernel/svc.h>
 #include <ml/IO/FileUtil.h>
+#include <ml/Log/LogUtil.h>
 #include <ml/Network/Socket/SocketFactory.h>
-#include <ml/Util/Abort.h>
 
 namespace ml {
-
-void DebugLogger::writeLine(std::string_view line) {
-    svcOutputDebugString(line.data(), line.size());
-}
-
 
 bool FileLogger::open(const char* filePath) {
     if (!ml::openOrCreateFile(mHandle, filePath, ml::FileOpenMode::WriteAppend)) {
@@ -18,7 +13,8 @@ bool FileLogger::open(const char* filePath) {
     }
 
     if (!ml::clearFile(mHandle)) {
-        ml::Abort("Failed to clear log file at %s", filePath);
+        LOG_ERROR("Failed to clear log file at %s", filePath); // should probably swallow the error
+        nn::fs::CloseFile(mHandle);
     }
 
     return true;
