@@ -10,6 +10,24 @@ Socket::Socket(int socketHandle) {
     mSocketHandle = socketHandle;
 }
 
+Socket::Socket(Socket&& other) noexcept {
+    mSocketHandle = other.mSocketHandle;
+    other.mSocketHandle = INVALID_SOCKET;
+}
+
+Socket& Socket::operator=(Socket&& other) noexcept {
+    if (&other == this) {
+        return *this;
+    }
+
+    this->close();
+
+    mSocketHandle = other.mSocketHandle;
+    other.mSocketHandle = INVALID_SOCKET;
+
+    return *this;
+}
+
 Result<NetError> Socket::setSendTimeOut(uint32_t milliseconds) const {
     int result = nn::socket::SetSockOpt(this->getHandle(), SOL_SOCKET, SO_SNDTIMEO, &milliseconds, sizeof(milliseconds));
     if (result == SOCKET_ERROR) {
@@ -76,7 +94,7 @@ int Socket::getHandle() const {
 }
 
 Socket::~Socket() {
-    Socket::close();
+    this->close();
 }
 
 }

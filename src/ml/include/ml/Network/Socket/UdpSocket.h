@@ -13,6 +13,8 @@ class ML_EXPORT UdpSocket : public Socket {
 public:
     explicit UdpSocket(int socketHandle, sockaddr_in address);
 
+    UdpSocket() = default;
+
     Result<NetError> send(const void* buffer, size_t bufferSize, int flags = 0);
     Result<NetError> receive(void* buffer, int bufferLength, int* outBytesReceived, int flags = 0);
 

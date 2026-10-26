@@ -1,21 +1,26 @@
 #pragma once
 
 #include <ml/Core/Result/Result.h>
+#include <ml/Core/Util/Macros.h>
 #include <ml/Export.h>
 #include <ml/Network/Socket/NetError.h>
 
 namespace ml {
 
-// TODO: Move semantics
-
 /**
  * An unsafe, and pure wrapper around an OS socket Handle.
  */
 class ML_EXPORT Socket {
-protected:
-    Socket(int socketHandle);
-
+    NO_COPY(Socket)
 public:
+    explicit Socket(int socketHandle);
+
+    Socket() = default;
+    Socket(Socket&& other) noexcept;
+    Socket& operator=(Socket&& other) noexcept;
+
+    ~Socket();
+
     Result<NetError> setSendTimeOut(uint32_t milliseconds) const;
     Result<NetError> setReceiveTimeOut(uint32_t milliseconds) const;
     Result<NetError> setNonBlocking() const;
@@ -29,14 +34,7 @@ public:
      */
     bool pollIn() const;
 
-    ~Socket();
-
     int getHandle() const;
-
-    Socket(const Socket&) = delete;
-    Socket& operator=(const Socket&) = delete;
-    Socket(Socket&&) = delete;
-    Socket& operator=(Socket&&) = delete;
 
 private:
     int mSocketHandle;
