@@ -9,7 +9,7 @@ namespace ml {
 
 namespace {
 
-constexpr const char* LogFilePath = "sd:/mod-logs.txt"; // could potentially add support for timestamped logs
+constexpr const char* LogFilePath = "sd:/logs.txt"; // could potentially add support for timestamped logs
 
 }
 
@@ -18,6 +18,7 @@ constexpr const char* LogFilePath = "sd:/mod-logs.txt"; // could potentially add
 ModLogger::ModLogger() :
     mCriticalSection(nullptr, sead::IDisposer::HeapNullOption::DoNotAppendDisposerIfNoHeapSpecified)
 {
+    mTcpLogger = TcpLogger();
     mLogLevel = LogLevel::Debug;
 }
 

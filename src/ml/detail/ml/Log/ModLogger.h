@@ -23,7 +23,7 @@ public:
     static void InitializeNetwork();
 
     /**
-     * Logs a formatted message to all initialized loggers
+     * Formats and logs a message with all initialized loggers
      */
     static void WriteLog(const char* fmt, va_list args);
 
