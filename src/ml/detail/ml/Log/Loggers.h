@@ -6,8 +6,6 @@
 
 namespace ml {
 
-
-
 /**
  * Writes logs to a file
  */
