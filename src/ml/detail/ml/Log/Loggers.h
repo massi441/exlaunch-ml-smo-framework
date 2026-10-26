@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include <ml/IO/ScopedFileHandle.h>
 #include <ml/Network/Socket/TcpSocket.h>
 #include <string_view>
@@ -30,7 +29,7 @@ protected:
 };
 
 /**
- * Sends logs over a TCP connection
+ * Sends logs over a TCP Socket
  */
 class TcpLogger {
 public:
@@ -40,7 +39,7 @@ public:
     void writeLine(std::string_view line);
 
 private:
-    std::unique_ptr<TcpSocket> mSocket;
+    TcpSocket mSocket;
 };
 
 }
