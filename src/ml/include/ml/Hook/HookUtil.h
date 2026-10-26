@@ -1,15 +1,38 @@
 #pragma once
 
-#include <cstdlib>
+#include <exl/armv8.hpp>
 #include <exl/hook/base.hpp>
-#include <ml/Export.h>
+#include <exl/util/sys/rw_pages.hpp>
+#include <nn/ro.h>
 
 #define ASSERT_STATIC_CALLBACK(CallbackFuncType) static_assert(!std::is_member_function_pointer_v<CallbackFuncType>, "Callback method must be static!");
 
 namespace ml {
 
-ML_EXPORT bool lookUpSymbol(uintptr_t* outAddress, const char* symbol);
-ML_EXPORT bool isExistSymbol(const char* symbol);
+inline bool lookUpSymbol(uintptr_t* outAddress, const char* symbol) {
+    nn::Result result = nn::ro::LookupSymbol(outAddress, symbol);
+
+    return result.IsSuccess();
+}
+
+inline bool isExistSymbol(const char* symbol) {
+    uintptr_t address;
+
+    return ml::lookUpSymbol(&address, symbol);
+}
+
+/**
+ * Patches a function's first instruction to return early.
+ * Useful if a function needs to patch itself to never run twice.
+ * @param funcPtr The address of the function to patch
+ */
+template <typename ...Args>
+void patchEarlyRet(void (*funcPtr)(Args...)) {
+    exl::util::RwPages pages = exl::util::RwPages(funcPtr, 1);
+    exl::armv8::InstType* instructions = pages.GetRw<exl::armv8::InstType>();
+
+    instructions[0] = exl::armv8::inst::Ret().Value();
+}
 
 inline uint64_t getBaseAddress() {
     return reinterpret_cast<uint64_t>(malloc) - 0x00724b94;
