@@ -1,12 +1,25 @@
 #include <ml/Log/Loggers.h>
 
 #include <exl/nx/kernel/svc.h>
+#include <math/seadMathCalcCommon.h>
 #include <ml/IO/FileUtil.h>
 #include <ml/Log/LogUtil.h>
 #include <ml/Network/Socket/SocketFactory.h>
 #include <ml/Util/Abort.h>
 
 namespace ml {
+
+void svcPrintFmt(const char* fmt, ...) {
+    constexpr int bufferSize = 1024;
+
+    char buffer[bufferSize];
+    va_list args;
+    va_start(args, fmt);
+    int length = sead::Mathi::min(std::vsprintf(buffer, fmt, args), bufferSize);
+    va_end(args);
+
+    svcOutputDebugString(buffer, length);
+}
 
 void svcPrint(const char* message, size_t messageSize) {
     svcOutputDebugString(message, messageSize);
@@ -42,10 +55,10 @@ void TcpLogger::writeLine(std::string_view line) {
     }
 
     // TODO: Add reconnect logic
-
     Result<NetError> sendResult = mSocket.send(line.data(), line.size());
     if (sendResult.isFailed()) {
         ml::Result<NetError> closeResult = mSocket.close();
+
         if (closeResult.isFailed()) {
             ml::Abort("Fatal Error: Failed to close TCP logger socket after failing to send log. Send error: %s, Close error: %s",
                 NetErrorData::ToString(sendResult.error()),
