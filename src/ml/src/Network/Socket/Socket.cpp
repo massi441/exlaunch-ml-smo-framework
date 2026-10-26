@@ -10,6 +10,10 @@ Socket::Socket(int socketHandle) {
     mSocketHandle = socketHandle;
 }
 
+Socket::Socket() {
+    mSocketHandle = INVALID_SOCKET;
+}
+
 Socket::Socket(Socket&& other) noexcept {
     mSocketHandle = other.mSocketHandle;
     other.mSocketHandle = INVALID_SOCKET;

@@ -15,7 +15,7 @@ class ML_EXPORT Socket {
 public:
     explicit Socket(int socketHandle);
 
-    Socket() = default;
+    Socket();
     Socket(Socket&& other) noexcept;
     Socket& operator=(Socket&& other) noexcept;
 
