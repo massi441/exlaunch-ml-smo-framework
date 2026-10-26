@@ -28,4 +28,9 @@ void svcPrintFmt(const char* fmt, ...);
  */
 void svcPrintFmtV(const char* fmt, va_list args);
 
+template <size_t N>
+void svcPrint(const char (&buffer)[N]) {
+    ml::svcPrint(buffer, N - 1);
+}
+
 }

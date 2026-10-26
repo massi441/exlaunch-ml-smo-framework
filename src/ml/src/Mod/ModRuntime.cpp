@@ -7,6 +7,7 @@
 #include <exl/util/sys/mem_layout.hpp>
 #include <ml/Hook/FactoryHook.h>
 #include <ml/Input/MouseKeyboardHook.h>
+#include <ml/Log/DebugPrint.h>
 #include <ml/Log/ModLogger.h>
 #include <ml/Network/Network.h>
 #include <nn/fs/fs_mount.h>
@@ -53,6 +54,12 @@ void installHooks() {
 // Symbol that exlaunch needs, we could add logging before aborting later on
 namespace exl::diag {
 void WEAK NORETURN NOINLINE AbortImpl(const AbortCtx& ctx) {
+    ml::svcPrint("EXL ABORT");
+
+    if (ctx.format) {
+        ml::svcPrintFmtV(ctx.format, ctx.args);
+    }
+
     svcBreak(ctx.isAssertion ? BreakReason_Assert : BreakReason_Panic, ctx.value, 0);
 
     UNREACHABLE;
