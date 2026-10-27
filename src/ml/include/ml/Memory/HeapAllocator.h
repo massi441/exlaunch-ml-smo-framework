@@ -2,7 +2,7 @@
 
 #include <basis/seadTypes.h>
 #include <heap/seadHeap.h>
-#include <heap/seadHeapMgr.h>
+#include <ml/Memory/HeapUtil.h>
 #include <ml/Util/Abort.h>
 
 namespace ml {
@@ -10,7 +10,7 @@ namespace ml {
 class HeapAllocator {
 public:
     explicit HeapAllocator(const char* heapName) {
-        mHeap = sead::HeapMgr::instance()->findHeapByName(heapName, 0);
+        mHeap = ml::findHeap(heapName);
 
         ml::AbortIf(mHeap == nullptr, "Heap %s doesn't exist, HeapAllocator cannot be created", heapName);
     }

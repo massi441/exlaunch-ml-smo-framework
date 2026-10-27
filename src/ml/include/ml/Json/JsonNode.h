@@ -31,6 +31,11 @@ public:
     }
 
     template <typename T>
+    bool is() const {
+        return mVariant.is<T>();
+    }
+
+    template <typename T>
     T asOr(const T& defaultValue = T()) {
         if (!this->is<T>()) {
             this->set<T>(defaultValue);
@@ -63,11 +68,6 @@ public:
 
 private:
     ArduinoJson::JsonVariant mVariant;
-
-    template <typename T>
-    bool is() const {
-        return mVariant.is<T>();
-    }
 };
 
 }
