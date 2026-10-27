@@ -32,7 +32,7 @@ namespace exl::hook::impl {
             _HOOK_STATIC_CALLBACK_ASSERT();
 
             uintptr_t address = 0;
-            EXL_ASSERT(R_SUCCEEDED(nn::ro::LookupSymbol(&address, symbol)), "Symbol not found!");
+            EXL_ASSERT(R_SUCCEEDED(exl::reloc::LookupSymbol(&address, symbol)), "Symbol not found!");
 
             hook::HookInline(address, Derived::Callback);
         }
