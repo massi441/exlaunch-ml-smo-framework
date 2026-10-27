@@ -9,6 +9,7 @@
 #include <ml/Input/MouseKeyboardHook.h>
 #include <ml/Log/DebugPrint.h>
 #include <ml/Log/ModLogger.h>
+#include <ml/Memory/DynamicSceneHeapHook.h>
 #include <ml/Network/Network.h>
 #include <nn/fs/fs_mount.h>
 
@@ -47,6 +48,7 @@ void installHooks() {
     PlayerFactoryHook::Install("_ZN13PlayerFactoryC2Ev");
 
     MouseKeyboardHook::Install();
+    DynamicSceneHeapHook::Install();
 }
 
 }
