@@ -1,12 +1,12 @@
 add_library(ml_runtime INTERFACE)
 
-# Adds only the headers to the interface consumers link against
+# The interface consumers link against (to get the framework dependencies)
 target_include_directories(ml_runtime INTERFACE ${ML_RUNTIME_DIR}/include)
 
 target_link_libraries(ml_runtime INTERFACE
     $<COMPILE_ONLY:exlaunch>
-    $<COMPILE_ONLY:ml_core_cpp>
-    $<COMPILE_ONLY:ArduinoJson>
+    ml_core_cpp
+    ArduinoJson
 )
 
 target_include_directories(ml_runtime INTERFACE ${ML_RUNTIME_DIR}/include)
