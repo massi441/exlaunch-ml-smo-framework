@@ -39,18 +39,18 @@ Result<NetError> TcpListenSocket::listen(int backlog) const {
     return Result<NetError>::Success();
 }
 
-ReturnResult<std::unique_ptr<TcpSocket>, NetError> TcpListenSocket::accept() const {
+ReturnResult<TcpSocket, NetError> TcpListenSocket::accept() const {
     int socketFd = nn::socket::Accept(this->getHandle(), nullptr, nullptr);
 
     if (socketFd == INVALID_SOCKET) {
-        return NNErrorMapper::MapLastError<std::unique_ptr<TcpSocket>>();
+        return NNErrorMapper::MapLastError<TcpSocket>();
     }
 
-    std::unique_ptr<TcpSocket> socket = std::make_unique<TcpSocket>(socketFd);
+    TcpSocket socket = TcpSocket(socketFd);
 
     LOG_TRACE("Accepted TCP socket from listener");
 
-    return ReturnResult<std::unique_ptr<TcpSocket>, NetError>::Success(std::move(socket));
+    return ReturnResult<TcpSocket, NetError>::Success(std::move(socket));
 }
 
 }
