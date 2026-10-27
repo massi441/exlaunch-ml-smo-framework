@@ -9,6 +9,14 @@ class ExpHeap;
 
 namespace ml {
 
+inline void getModStorage(const char* key, ModStorageValue* outValue) {
+    ml::ModRuntime::GetModStorage()->get(key, outValue);
+}
+
+inline void setModStorage(const char* key, const ModStorageValue& value) {
+    ml::ModRuntime::GetModStorage()->set(key, value);
+}
+
 template <typename T>
 T getModStorage(const char* key) {
     return ml::ModRuntime::GetModStorage()->get<T>(key);
@@ -17,10 +25,6 @@ T getModStorage(const char* key) {
 template <typename T>
 T getModStorageValue(const char* key, T defaultValue = T()) {
     return ml::ModRuntime::GetModStorage()->getValue<T>(key, defaultValue);
-}
-
-inline void setModStorage(const char* key, const ModStorageValue& value) {
-    ml::ModRuntime::GetModStorage()->set(key, value);
 }
 
 template <typename T>
