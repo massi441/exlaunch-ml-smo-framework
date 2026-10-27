@@ -1,7 +1,7 @@
 #include <ml/Log/Loggers.h>
 
 #include <ml/IO/FileUtil.h>
-#include <ml/Log/DebugPrint.h>
+#include <ml/Log/Log.h>
 #include <ml/Network/Socket/SocketFactory.h>
 #include <ml/Util/Abort.h>
 
@@ -13,8 +13,8 @@ bool FileLogger::open(const char* filePath) {
     }
 
     if (!ml::clearFile(mHandle)) {
-        ml::svcPrintFmt("Failed to clear log file at %s", filePath); // should probably swallow the error
         nn::fs::CloseFile(mHandle);
+        LOG_ERROR("Failed to clear log file at %s", filePath); // should probably swallow the error
     }
 
     return true;
@@ -27,8 +27,15 @@ void FileLogger::writeLine(std::string_view line) {
 }
 
 bool TcpLogger::connect(const char* ip, int port) {
-    mSocket = ml::createTcpSocket(ip, port).data();
-    return mSocket.isValid();
+    ml::ReturnResult<TcpSocket, NetError> result = ml::createTcpSocket(ip, port);
+    if (result.isFailed()) {
+        LOG_ERROR("Failed to connect to TCP logger socket at %s: %s", ip, NetErrorData::ToString(result.error()));
+        return false;
+    }
+
+    mSocket = std::move(result.data());
+
+    return true;
 }
 
 void TcpLogger::writeLine(std::string_view line) {
