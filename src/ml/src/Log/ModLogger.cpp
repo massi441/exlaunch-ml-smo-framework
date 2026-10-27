@@ -60,6 +60,8 @@ void ModLogger::initializeNetwork() {
 
 void ModLogger::setLogLevel(LogLevel logLevel) {
     mLogLevel = logLevel;
+
+    LOG_LINE("Set log level to %s", ml::LogLevelData::ToString(logLevel));
 }
 
 LogLevel ModLogger::getLogLevel() const {

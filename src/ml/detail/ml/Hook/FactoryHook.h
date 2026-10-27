@@ -1,6 +1,7 @@
 #pragma once
 
 #include <exl/hook/trampoline.hpp>
+#include <ml/Log/Log.h>
 #include <vector>
 
 #include "Library/Factory/Factory.h"
@@ -75,6 +76,7 @@ private:
 
         for (int i = vanillaEntryCount, j = 0; j < customEntryCount; i++, j++) {
             sCombinedEntries[i] = sCustomEntries[j];
+            LOG_TRACE("Added custom entry %s to factory", sCombinedEntries[i].name);
         }
 
         factory->mFactoryEntries = sCombinedEntries;
