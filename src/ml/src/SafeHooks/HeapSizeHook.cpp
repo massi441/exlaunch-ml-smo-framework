@@ -16,7 +16,7 @@ constexpr uint64_t DESIRED_ROOT_HEAP_SIZE = ml::MemorySize::MegaBytes(6082); // 
 void ExpandHeapSize() {
     nn::os::SetMemoryHeapSize(DESIRED_ROOT_HEAP_SIZE);
 
-    LOG_TRACE("APPLICATION HEAP SIZE: %lluMB", DESIRED_ROOT_HEAP_SIZE / ml::MemorySize::MB);
+    LOG_INFORMATION("APPLICATION HEAP SIZE: %lluMB", DESIRED_ROOT_HEAP_SIZE / ml::MemorySize::MB);
 }
 
 HOOK_DEFINE_TRAMPOLINE(ExpHeapCreateHook) {
@@ -56,9 +56,8 @@ HOOK_DEFINE_TRAMPOLINE(HeapCtorHook) {
 HOOK_DEFINE_INLINE(ApplicationFunctionHeapSizeExpansionHook) {
     static void Callback(exl::hook::nx64::InlineCtx* ctx) {
         ctx->X[8] += ml::MemorySize::MegaBytes(1000);
-        uint64_t heapSize = ctx->X[8];
 
-        LOG_DEBUG("Size of Root Heap: %lluMB", heapSize / ml::MemorySize::MB);
+        LOG_DEBUG("Size of Root Heap: %lluMB", ctx->X[8] / ml::MemorySize::MB);
     }
 };
 
