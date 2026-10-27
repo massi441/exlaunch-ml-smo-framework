@@ -2,8 +2,6 @@
 
 #include <concepts>
 
-// TODO: Update safe hook to patch itself to no-op, rather than storing extra boolean
-
 namespace ml {
 
 template <typename>
