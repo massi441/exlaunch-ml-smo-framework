@@ -4,7 +4,12 @@ add_executable(ml_runtime_dynamic)
 target_include_directories(ml_runtime_dynamic PRIVATE ${ML_RUNTIME_DIR}/detail)
 target_include_directories(ml_runtime_dynamic PRIVATE ${ML_RUNTIME_DIR}/include)
 
-target_link_libraries(ml_runtime_dynamic PRIVATE ml_core_cpp)
+target_link_libraries(ml_runtime_dynamic
+    PRIVATE
+    ml_core_cpp
+    ArduinoJson
+)
+
 target_compile_options(ml_runtime_dynamic PRIVATE -fvisibility=hidden)
 target_compile_definitions(ml_runtime_dynamic PRIVATE ML_DYNAMIC_RUNTIME)
 
