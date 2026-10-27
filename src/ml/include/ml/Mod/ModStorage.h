@@ -26,6 +26,13 @@ public:
         return value;
     }
 
+    /**
+     * Reads a value into an existing instance, for values that can't be default constructed
+     */
+    void get(const char* key, ModStorageValue* outValue) {
+        outValue->deserialize(this->getJson(key));
+    }
+
     template <typename T>
     T getValue(const char* key, T defaultValue = T()) {
         ModPrimitiveValue<T> value = defaultValue;
