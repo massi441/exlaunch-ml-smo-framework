@@ -6,11 +6,14 @@
 #include <exl/util/sys/cur_proc_handle.hpp>
 #include <exl/util/sys/mem_layout.hpp>
 #include <ml/Hook/FactoryHook.h>
+#include <ml/Hook/SafeHook.h>
 #include <ml/Input/MouseKeyboardHook.h>
-#include <ml/Log/DebugPrint.h>
 #include <ml/Log/ModLogger.h>
+#include <ml/Mod/ModSystem.h>
 #include <ml/Mod/ModSystemHook.h>
 #include <ml/Network/Network.h>
+#include <ml/SafeHooks/HeapSizeHook.h>
+#include <ml/SafeHooks/PlayerExtraCostumesHook.h>
 #include <nn/fs/fs_mount.h>
 
 namespace ml {
@@ -19,6 +22,10 @@ static void initLibs();
 static void installHooks();
 
 void ModRuntime::Initialize() {
+    if (sInitialized) {
+        return;
+    }
+
     initLibs();
     installHooks();
 
@@ -29,6 +36,8 @@ void ModRuntime::Initialize() {
     ml::Network::Initialize();
 
     ml::ModLogger::Instance()->initializeNetwork();
+
+    sInitialized = true;
 }
 
 void initLibs() {
@@ -51,20 +60,26 @@ void installHooks() {
     ModSystemHook::Install();
 }
 
+ml::ModStorage* ModRuntime::GetModStorage() {
+    return ModSystemHook::GetSystem()->getModStorage();
 }
 
-namespace exl::diag {
-void WEAK NORETURN NOINLINE AbortImpl(const AbortCtx& ctx) {
-    ml::svcPrint("EXL ABORT");
+sead::ExpHeap* ModRuntime::GetModSequenceHeap() {
+    return ModSystemHook::GetSystem()->getSequenceHeap();
+}
 
-    if (ctx.format) {
-        ml::svcPrintFmtV(ctx.format, ctx.args);
-    }
+sead::ExpHeap* ModRuntime::GetDynamicSceneHeap() {
+    return ModSystemHook::GetSystem()->getDynamicSceneHeap();
+}
 
-    svcBreak(ctx.isAssertion ? BreakReason_Assert : BreakReason_Panic, ctx.value, 0);
+void ModRuntime::RequestExtraPlayerCostumes(int extraCount) {
+    ml::InstallSafeHook<PlayerExtraCostumesHook>(); // already prevent double installs
 
-    UNREACHABLE;
+    PlayerExtraCostumesHook::RequestExtraCostumes(extraCount);
+}
+
+void ModRuntime::RequestMemoryExpansion() {
+    ml::InstallSafeHook<HeapSizeHook>();
 }
 
 }
-
