@@ -17,13 +17,13 @@ This is a general overview of the source tree
 
 ```
 libs/
-  exlaunch/      hooking framework (#include <exl/...>
+  exlaunch/      hooking framework (#include <exl/...>)
   ArduinoJson/   JSON (#include <ArduinoJson.hpp>)
   smo/           SMO headers
 src/
   startup/       startup code linked into every subsdk
   core-cpp/      a custom C++ library with project-agnostic utilities such as containers (#include <ml/Core/...>)
-  ml/            runtime hooks ans services (#include <ml/...>)
+  ml/            runtime hooks and services (#include <ml/...>)
   core-smo/      stateless SMO helpers for mods, linked statically in each module that uses it (#include <ml/CoreSMO/...>)
 cmake/           toolchain and cmake
 tools/           build tools
@@ -31,7 +31,7 @@ tools/           build tools
 
 ## Building
 
-The [template](https://github.com/massi441/exlaunch-smo-base) explains how to set up and build a full modding project. This section covers how the framework can be configured when built for such project.
+The [template](https://github.com/massi441/exlaunch-smo-base) explains how to set up and build a full modding project. This section covers how the framework can be configured when built for such a project.
 
 ### Required variables
 
@@ -40,7 +40,6 @@ The [template](https://github.com/massi441/exlaunch-smo-base) explains how to se
 | `ML_RUNTIME_BUILD_MODE` | How the runtime is built: `STATIC`, `DYNAMIC` or `INTERFACE` (see below).                                                |
 | `ML_OUTPUT_DIR` | The folder where `main.npdm` and the **subsdks** are built.                                                                  |
 | `ML_TOOLS_DIR` | The folder containing the build tools (`linkle`, `npdmtool`...).                                                         |
-| `ML_SUBSDK_MODULE_NAME` | The name of your NSO (used in [module.cpp](src/startup/module.cpp). This name will show up in stack traces when crashing. |
 
 ### Build modes
 
@@ -81,7 +80,7 @@ To see more information about what the runtime provides and how to use its API, 
 
 - [exlaunch](https://github.com/LynxDev2/smo-exlaunch-base-clang): Base exlaunch template for SMO with clang.
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson): JSON library.
-- [OdysseyHeaders](https://github.com/MonsterDruide1/OdysseyDecomp): SMO headers tracked by [smo-headers](https://github.com/massi441/smo-headers).
+- [OdysseyHeaders](https://github.com/MonsterDruide1/OdysseyHeaders): SMO headers tracked by [smo-headers](https://github.com/massi441/smo-headers).
 
 ## License
 
