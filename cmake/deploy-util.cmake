@@ -69,7 +69,7 @@ endfunction()
 
 # Deploys the current output folder into the given destination folder.
 # If you are deploying to a mod folder, ensure that the destination ends with '/exefs'
-# example usage: deploy_mod("yuzu_deployment" "yuzu/MyModPath/exefs")
+# example usage: deploy_mod(deploy_target "${yuzu_path}/MyModPath/exefs")
 function(deploy_mod deployment_name dest)
     # Need to cleanup any stale runtime subsdk9 from previous builds
     if (ML_RUNTIME_BUILD_MODE STREQUAL "STATIC")
