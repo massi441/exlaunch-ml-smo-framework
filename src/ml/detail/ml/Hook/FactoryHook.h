@@ -33,22 +33,32 @@ public:
     }
 
     /**
-     * @brief Installs the factory hook at the provided symbol
+     * @brief Installs the factory hook at the provided symbol, if the factory was not already installed
+     * @param factoryName The name of the factory to install
      * @param symbol The symbol of the factory constructor to hook into
      */
-    static void Install(const char* symbol) {
+    static void SafeInstall(const char* factoryName, const char* symbol) {
         if (!sIsInstalled) {
+            LOG_INFORMATION("Installing %s factory at symbol %s", factoryName, symbol);
             Base::InstallAtSymbol(symbol);
+            sIsInstalled = true;
+        } else {
+            LOG_VERBOSE("Factory %s was already installed, skipping installation at symbol %s", factoryName, symbol);
         }
     }
 
     /**
-     * @brief Installs the factory hook at the provided offset
+     * @brief Installs the factory hook at the provided offset, if the factory hook was not already installed
+     * @param factoryName The name of the factory to install
      * @param offset The offset of the factory constructor to hook into
      */
-    static void InstallAtOffset(uint64_t offset) {
+    static void SafeInstallAtOffset(const char* factoryName, uint64_t offset) {
         if (!sIsInstalled) {
+            LOG_INFORMATION("Installing %s factory at offset 0x%lx", factoryName, offset);
             Base::InstallAtOffset(offset);
+            sIsInstalled = true;
+        } else {
+            LOG_VERBOSE("Factory %s was already installed, skipping installation at offset 0x%lx", factoryName, offset);
         }
     }
 

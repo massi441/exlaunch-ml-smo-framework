@@ -48,14 +48,8 @@ void initLibs() {
     exl::hook::nx64::Initialize();
 }
 
+// Note: Factory hooks are lazily installed as entries get added in FactoryRegistry.cpp
 void installHooks() {
-    // could probably make the factory hooks configurable at install time, maybe later
-    // probably should use offsets depending on the version instead of symbols
-    ActorFactoryHook::Install("_ZN19ProjectActorFactoryC2Ev");
-    AreaFactoryHook::Install("_ZN18ProjectAreaFactoryC2Ev");
-    CameraPoserFactoryHook::Install("_ZN25ProjectCameraPoserFactoryC1Ev");
-    PlayerFactoryHook::Install("_ZN13PlayerFactoryC2Ev");
-
     MouseKeyboardHook::Install();
     ModSystemHook::Install();
 }
