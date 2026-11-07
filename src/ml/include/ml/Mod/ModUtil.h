@@ -28,6 +28,11 @@ T getModStorageValue(const char* key, T defaultValue = T()) {
 }
 
 template <typename T>
+ModStorageArray<T> getModStorageArray(const char* key) {
+    return ml::ModRuntime::GetModStorage()->getArray<T>(key);
+}
+
+template <typename T>
 void setModStorageValue(const char* key, T value) {
     ml::ModRuntime::GetModStorage()->setValue<T>(key, value);
 }

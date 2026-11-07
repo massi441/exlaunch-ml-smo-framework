@@ -5,6 +5,8 @@
 #include <ml/Mod/ModStorageConfig.h>
 #include <ml/Mod/ModStorageValue.h>
 
+#include "ModStorageArray.h"
+
 namespace sead {
 class ExpHeap;
 }
@@ -38,6 +40,12 @@ public:
         ModPrimitiveValue<T> value = defaultValue;
         value.deserialize(this->getJson(key));
         return value;
+    }
+
+    template <typename T>
+    ModStorageArray<T> getArray(const char* key) {
+        JsonNode node = this->getJson(key);
+        return ModStorageArray<T>(node);
     }
 
     template <typename T>
