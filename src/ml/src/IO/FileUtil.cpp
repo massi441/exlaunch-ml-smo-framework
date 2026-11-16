@@ -9,18 +9,15 @@
 namespace ml {
 
 const char* getSdMountPath() {
-    const char* switchPath = "sd:/atmosphere/contents/0100000000010000/";
-    const char* emulatorPath = "sd:/";
+    if (ml::isEmulator()) {
+        return "sd:/";
+    }
 
-    return ml::isEmulator()
-        ? emulatorPath
-        : switchPath;
+    return "sd:/atmosphere/contents/0100000000010000/";
 }
 
 bool isEmulator() {
-    nn::fs::DirectoryEntryType type;
-    nn::fs::GetEntryType(&type, "sd:/atmosphere/package3");
-    return type != nn::fs::DirectoryEntryType_File;
+    return !ml::isExistFile("sd:/atmosphere/package3");
 }
 
 std::string makeSdPath(const char* fileName) {
